@@ -1,6 +1,6 @@
 @extends('layout.master_user') 
 @section('title') 
-Dashboard
+Point User
 @endsection 
 @section('css') 
 @endsection 
@@ -52,10 +52,11 @@ Dashboard
                         <tr><td id="sisa"></td></tr>
                     </table>                    
                     <div class="card-header">
-                        <table class="table table-striped center">
+                        <table class="table table-striped table-bordered center">
                             <thead>
                                 <tr class="text-center">
-                                    <th>Kode Transaksi</th>
+                                   
+                                <th>Kode Transaksi</th>
                                     <th>Nama Member</th>
                                     <th>Tanggal</th>
                                     <th>Nominal</th>
@@ -89,14 +90,16 @@ Dashboard
                 var let_='';
                 for (let key of data.getpoin.data) {
                     let_ += `<tr class="text-center">
-                    <td>` + key.id_transaksi + `</td>
+                   
+                                        <td>` + key.id_transaksi + `</td>
                     <td>` + key.id_user + `</td>
                     <td>` + key.tanggal_poin + `</td>
                     <td>` + key.nominal + `</td>
                     <td>` + key.jumlah_poin + `</td> 
                     <td data-id_poin="` + key.id_poin + `" 
-                    ><d class="btn btn-warning Detail">Detail</a></td>  
-                    </tr>`
+                    ><d class="btn btn-warning Detail">Detail</a></td>
+                                       </tr>`
+                    
                 }
                 $('#jumlahpoin').html('Total poin: '+data.jumlah_poin);
                 $('#digunakan').html('Total poin digunakan: '+data.digunakan);

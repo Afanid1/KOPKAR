@@ -78,14 +78,16 @@ Keuangan Anggota
                     <button class="btn btn-secondary print" onclick="window.print();return false;">Print</button>
                     <div style="overflow-x:auto;">
 
-                        <table class="table center">
-                            <tr>
-                                <th>No</th>
-                                <th>Total Simpan Pokok</th>
-                                <th>Total Simpan Wajib</th>
-                                <th>Total Simpan Sukarela</th>
-                                <th>Total Keseluruhan</th>
-                            </tr>
+                        <table class="table center table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Total Simpan Pokok</th>
+                                    <th>Total Simpan Wajib</th>
+                                    <th>Total Simpan Sukarela</th>
+                                    <th>Total Keseluruhan</th>
+                                </tr>
+                            </thead>
                             @php
                             $i=1;
                             @endphp

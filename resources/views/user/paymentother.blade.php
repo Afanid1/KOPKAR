@@ -42,14 +42,16 @@ Pembayaran Sukarela
                 </div>
                 <div class="card-body">
                     <h3 class="pb-3 text-bold">Total : {{$ttl}}</h3>
-                    <table class="table center">
-                        <tr class="text-center">
-                            <!-- <th>No.</th> -->
-                            <th>Bulan Ke</th>
-                            <th>Tanggal</th>
-                            <th>Nominal</th>
-                            <th>Tahun Pembayaran</th>
-                        </tr>
+                    <table class="table center table-bordered table-striped text-center">
+                        <thead>
+                            <tr class="text-center">
+                                <!-- <th>No.</th> -->
+                                <th>Bulan Ke</th>
+                                <th>Tanggal</th>
+                                <th>Nominal</th>
+                                <th>Tahun Pembayaran</th>
+                            </tr>
+                        </thead>
                         @php
                         $i=1;
                         @endphp

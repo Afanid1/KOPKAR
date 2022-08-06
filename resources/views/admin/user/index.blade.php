@@ -244,7 +244,7 @@ Manage User
                     text: '+ Tambah user',
                     className: 'btn-primary',
                     action: function(e, dt, node, config) {
-                        $('#action-modal').text('Tambah ')
+                        $('#action-modal').text('Tambah')
                         $('#user-modal').modal('show')
                         $("#user-form")[0].reset();
                         $("#user-form").attr('data-id', '');

@@ -86,8 +86,8 @@ Manage Point
                         </div>
                     </div>
                     <div style="overflow-x:auto;">
-                        <table class="table centerW table table-striped">
-                            <thead>
+                        <table class="table centerW table-bordered table table-striped">
+                            <thead class="text-center">
                                 <th>id_user</th>
                                 <th>custmer_partner_name</th>
                                 <th>Poin Total</th>
@@ -186,8 +186,8 @@ Manage Point
                     
                     <td>` + cs + `</td>  
                     <td>` + key.id_user + `</td> 
-                    <td>` + key.total + `</td>
-                    <td>` + key.status + `</td>
+                    <td class="text-center">` + key.total + `</td>
+                    <td class="text-center">` + key.status + `</td>
                     
 
                     <td 

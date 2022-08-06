@@ -46,17 +46,19 @@ Pembayaran Pokok
                 </div>
                 <div class="card-body">
                     <h3 class="pb-3 text-bold">Status : {{$status}}</h3>
-                    <table class="table center">
-                        <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Nominal</th>
-                        </tr>
+                    <table class="table center table-bordered table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Nominal</th>
+                            </tr>
+                        </thead>
                         @php
                         $i=1;
                         @endphp
                         @foreach(@$main_peyment as $keu)
-                        <tr>
+                        <tr class="table table-striped">
                             <td class="pl-3">{{$i}}</td>
                             <td>{{@$keu->paid_at}}</td>
                             <td>{{@$keu->amount}}</td>

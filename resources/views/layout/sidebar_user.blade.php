@@ -29,7 +29,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('user.poinuser') }}" class="nav-link {{Route::currentRouteName() == 'user.poin' ? 'active' : ''}}">
-                        <i class="fa fa-dollar-sign nav-icon"></i>
+                        <i class="fa fa-gift  nav-icon"></i>
                         <p>Manage Poin</p>
                     </a>
                 </li>

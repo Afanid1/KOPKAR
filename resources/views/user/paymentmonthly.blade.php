@@ -31,6 +31,7 @@ Pembayaran Wajib
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
+                    <h3 class="card-title">Data Pembayaran</h3>
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -43,14 +44,16 @@ Pembayaran Wajib
                 </div>
                 <div class="card-body">
                     <h3 class="pb-3 text-bold">Total : {{$ttl}}</h3>
-                    <table class="table center">
-                        <tr>
-                            <!-- <th>No.</th> -->
-                            <th class="text-center">Bulan Ke</th>
-                            <th class="text-center">Tanggal</th>
-                            <th class="text-center">Nominal</th>
-                            <th class="text-center">Tahun Pembayaran</th>
-                        </tr>
+                    <table class="table center table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <!-- <th>No.</th> -->
+                                <th class="text-center">Bulan Ke</th>
+                                <th class="text-center">Tanggal</th>
+                                <th class="text-center">Nominal</th>
+                                <th class="text-center">Tahun Pembayaran</th>
+                            </tr>
+                        </thead>
                         @php
                         $i=1;
                         @endphp

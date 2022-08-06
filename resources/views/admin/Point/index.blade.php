@@ -86,13 +86,13 @@ Manage Point
                         </div>
                     </div>
                     <div style="overflow-x:auto;">
-                        <table class="table centerW table table-striped">
+                        <table class="table centerW table table-striped table-bordered">
                             <thead>
                                 <!-- <th>id_user</th> -->
                                 <th>Kode Transaksi</th>
                                 <th>Nama Anggota</th>
-                                <th>Poin</th>
-                                <th>Tanggal</th>
+                                <th class="text-center">Poin</th>
+                                <th class="text-center">Tanggal</th>
                                 <th  class="text-center">Aksi</th>
                             </thead>
                             <tbody id="listPoin">
@@ -187,8 +187,8 @@ Manage Point
                      
                     <td>` + key.id_transaksi + `</td>
                     <td>` + key.id_user + `</td> 
-                    <td>` + key.total + `</td>
-                    <td>` + key.tanggal_poin + `</td>
+                    <td class="text-center">` + key.total + `</td>
+                    <td class="text-center">` + key.tanggal_poin + `</td>
 
                     <td 
                     data-id_poin="`+key.id_user+`"  data-total="`+key.total+`" class="text-center">
