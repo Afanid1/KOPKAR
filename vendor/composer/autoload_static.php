@@ -647,6 +647,7 @@ class ComposerStaticInit2e37588b43ddc12d03733c35f8f58ad3
         'App\\Http\\Controllers\\Admin\\MonthlyPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/MonthlyPaymentController.php',
         'App\\Http\\Controllers\\Admin\\OtherPaymentController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/OtherPaymentController.php',
         'App\\Http\\Controllers\\Admin\\PointController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PointController.php',
+        'App\\Http\\Controllers\\Admin\\PointRewardController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PointRewardController.php',
         'App\\Http\\Controllers\\Admin\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/UserController.php',
         'App\\Http\\Controllers\\Admin\\WalletController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/WalletController.php',
         'App\\Http\\Controllers\\Admin\\WithdrawController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/WithdrawController.php',

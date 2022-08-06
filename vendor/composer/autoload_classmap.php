@@ -22,6 +22,7 @@ return array(
     'App\\Http\\Controllers\\Admin\\MonthlyPaymentController' => $baseDir . '/app/Http/Controllers/Admin/MonthlyPaymentController.php',
     'App\\Http\\Controllers\\Admin\\OtherPaymentController' => $baseDir . '/app/Http/Controllers/Admin/OtherPaymentController.php',
     'App\\Http\\Controllers\\Admin\\PointController' => $baseDir . '/app/Http/Controllers/Admin/PointController.php',
+    'App\\Http\\Controllers\\Admin\\PointRewardController' => $baseDir . '/app/Http/Controllers/Admin/PointRewardController.php',
     'App\\Http\\Controllers\\Admin\\UserController' => $baseDir . '/app/Http/Controllers/Admin/UserController.php',
     'App\\Http\\Controllers\\Admin\\WalletController' => $baseDir . '/app/Http/Controllers/Admin/WalletController.php',
     'App\\Http\\Controllers\\Admin\\WithdrawController' => $baseDir . '/app/Http/Controllers/Admin/WithdrawController.php',
