@@ -5,9 +5,10 @@ Point User
 @section('css') 
 @endsection 
 @section('content')
-<?php
-
-?>
+@php
+$get_member=DB::table('users')->where('id',Auth::user()->id)->first();
+$jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->member_id)->update(['status'=>'dibaca']);
+@endphp
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -50,6 +51,7 @@ Point User
                         <tr><td id="jumlahpoin"></td></tr>
                         <tr><td id="digunakan"></td></tr>
                         <tr><td id="sisa"></td></tr>
+                         <tr><td ><a href="#" id="HistoryPoin">Riwayat Poin</a></td></tr>
                     </table>                    
                     <div class="card-header">
                         <table class="table table-striped table-bordered center">
@@ -75,7 +77,27 @@ Point User
     </section>
     <!-- /.content -->
 </div>
-
+<div id="RiwayatModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title align-self-center mt-0">Riwayat Poin Yang digunakan</h5>
+            </div>
+            <div class="modal-body text-center">
+               <table class="table">
+                   <thead>
+                       <tr>
+                           <td>Tanggal</td>
+                           <td>Poin digunakan</td>
+                           <td>Deskripsi</td> 
+                       </tr>
+                   </thead>
+                   <tbody id="listHistory"></tbody>
+               </table>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.content-wrapper -->
 @endsection
 
@@ -98,7 +120,8 @@ Point User
                     <td>` + key.jumlah_poin + `</td> 
                     <td data-id_poin="` + key.id_poin + `" 
                     ><d class="btn btn-warning Detail">Detail</a></td>
-                                       </tr>`
+                                       </tr>`;
+                                       window.id_user=key.id_user;
                     
                 }
                 $('#jumlahpoin').html('Total poin: '+data.jumlah_poin);
@@ -113,6 +136,33 @@ Point User
         {
             e.preventDefault();
             window.location.href="{{url('user/get-table-poin')}}/"+$(this).closest('td').data('id_poin');
+        });
+         $('body').delegate('#HistoryPoin', 'click', function(e) {   
+
+            e.preventDefault(); 
+            $('#RiwayatModal').modal('show');
+        });
+     $('#RiwayatModal').on('shown.bs.modal', function (e) 
+        {
+            e.preventDefault(); 
+                $('#listHistory').empty();
+
+            fetch("{{url('hitsori-poin')}}?id_user=" + window.id_user, {
+                method: 'GET'
+            }).then(res => res.json()).then(data => { 
+                var list_='';
+                for(let ri of data.riwayat)
+                {
+                    list_+=`<tr>
+                                <td>`+ri.created_at+`</td>
+                                <td>`+ri.poin+`</td>
+                                <td>`+ri.deskripsi+`</td>
+                                </tr>`;
+                 
+                }
+                $('#listHistory').html(list_);
+            });
+                
         });
     })
 </script>

@@ -31,6 +31,13 @@
                     <a href="{{ route('user.poinuser') }}" class="nav-link {{Route::currentRouteName() == 'user.poin' ? 'active' : ''}}">
                         <i class="fa fa-gift  nav-icon"></i>
                         <p>Manage Poin</p>
+                        @php
+                         $get_member=DB::table('users')->where('id',Auth::user()->id)->first();
+                        $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->member_id)->where('status','=','belum dibaca')->count();
+                        @endphp
+                        @if( $jmriwayat!=0)
+                        <span class="badge badge-danger">{{ $jmriwayat }}</span>
+                        @endif
                     </a>
                 </li>
                 <li class="nav-item {{(strpos(Route::currentRouteName(), 'user.payment') === 0) ? 'menu-is-opening menu-open' : ''}}">

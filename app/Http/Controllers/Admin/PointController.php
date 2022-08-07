@@ -114,18 +114,24 @@ class PointController extends Controller
 
     public function gettablepoin(Request $request)
     {
-        $db_get         = DB::table('tb_poin_fandi') 
-        ->select('tb_poin_fandi.*', 'tb_poin_fandi.jumlah_poin as total')  
-        ->where('tb_poin_fandi.status','aktif')
-        ->paginate(20);
+        $dt         = DB::table('tb_poin_fandi'); 
+        $dt->select('tb_poin_fandi.*', 'tb_poin_fandi.jumlah_poin as total'); 
+        $dt->where('tb_poin_fandi.status','aktif');
+        if(@$request->input('cari'))
+        {
+            $dt->where('tb_poin_fandi.id_user','like','%'.@$request->input('cari').'%');
+            $dt->Orwhere('tb_poin_fandi.status','aktif'); 
+            $dt->where('tb_poin_fandi.custmer_partner_name','like','%'.@$request->input('cari').'%');
+
+            
+        }
+        $dt->orderBy('id_poin','DESC');
+         $db_get =$dt->paginate(20);
         $i=0;
         foreach ($db_get as $key) 
-        {
+        { 
 
-
-          $i++;
-          
-
+          $i++; 
       }
       print json_encode(array('db_get' => $db_get));
   }
@@ -141,6 +147,15 @@ class PointController extends Controller
      {
         DB::table('tb_poin_dipakai')->insert(['poin'=>$request->input('penguranganpoin'),'id_user'=>$request->input('id_user')]);
     }
+    DB::table('tb_riwayat_point')->insert(
+        [
+            'poin'=>$request->input('penguranganpoin'),
+            'id_user'=>$request->input('id_user'),
+            'deskripsi'=>$request->input('deskripsi'),
+            'created_at'=>Carbon::now()
+
+        ]
+    );
 
     print json_encode(array('error' => false));
 }
@@ -177,6 +192,16 @@ public function gettotalpoin(Request $request)
 
 
     print json_encode(array('jumlah_poin' =>$jumlah_poin-$dipakai,'jumlah_dipakai'=>$dipakai));
+        // test
+}
+public function hitsoripoin(Request $request)
+{
+    $riwayat         = DB::table('tb_riwayat_point') 
+    ->where('id_user','like', $request->input('id_user'))  
+     ->orderBy('created_at','DESC')
+    ->get(); 
+
+    print json_encode(array('riwayat' =>$riwayat));
         // test
 }
 
