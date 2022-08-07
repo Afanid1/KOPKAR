@@ -1,9 +1,51 @@
-@extends('layout.master_user') 
-@section('title') 
+@extends('layout.master_user')
+@section('title')
 Point User
-@endsection 
-@section('css') 
-@endsection 
+@endsection
+@section('css')
+<link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
+<style>
+    .btn-secondary {
+        color: #fff;
+        background-color: #0062cc;
+        border-color: #0062cc;
+        box-shadow: none;
+        margin: 2px;
+        margin-top: -1px;
+    }
+
+    .btn-secondary:hover {
+        color: #fff;
+        background-color: #0270e8;
+        border-color: #0270e8;
+    }
+
+    .btn-secondary:focus,
+    .btn-secondary.focus {
+        color: #fff;
+        background-color: #0270e8;
+        border-color: #0270e8;
+        box-shadow: 0 0 0 0 rgba(130, 138, 145, 0.5);
+    }
+
+    .btn-secondary.disabled,
+    .btn-secondary:disabled {
+        color: #fff;
+        background-color: #0270e8;
+        border-color: #0270e8;
+    }
+
+
+    .btn.btn-secondary.print.drop {
+        margin-left: 950px;
+        margin-top: -50px;
+    }
+
+    .table.table-striped.table-bordered.center {
+        margin-top: -10px;
+    }
+</style>
+@endsection
 @section('content')
 <?php
 
@@ -47,21 +89,29 @@ Point User
                 </div>
                 <div class="card-body">
                     <table>
-                        <tr><td id="jumlahpoin"></td></tr>
-                        <tr><td id="digunakan"></td></tr>
-                        <tr><td id="sisa"></td></tr>
-                    </table>                    
+                        <tr>
+                            <td id="jumlahpoin"></td>
+                        </tr>
+                        <tr>
+                            <td id="digunakan"></td>
+                        </tr>
+                        <tr>
+                            <td id="sisa"></td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-secondary print drop" onclick="window.print();return false;">Print</button>
+
                     <div class="card-header">
                         <table class="table table-striped table-bordered center">
                             <thead>
                                 <tr class="text-center">
-                                   
-                                <th>Kode Transaksi</th>
+
+                                    <th>Kode Transaksi</th>
                                     <th>Nama Member</th>
                                     <th>Tanggal</th>
                                     <th>Nominal</th>
-                                    <th>Jml Poin</th> 
-                                    <th>Aksi</th>
+                                    <th>Jml Poin</th>
+                                    <th class="drop">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="listPoin">
@@ -81,13 +131,14 @@ Point User
 
 @section('script')
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         gettable();
+
         function gettable() {
             fetch("{{url('user/get-table-poin')}}", {
                 method: 'GET'
             }).then(res => res.json()).then(data => {
-                var let_='';
+                var let_ = '';
                 for (let key of data.getpoin.data) {
                     let_ += `<tr class="text-center">
                    
@@ -99,20 +150,19 @@ Point User
                     <td data-id_poin="` + key.id_poin + `" 
                     ><d class="btn btn-warning Detail">Detail</a></td>
                                        </tr>`
-                    
+
                 }
-                $('#jumlahpoin').html('Total poin: '+data.jumlah_poin);
-                $('#digunakan').html('Total poin digunakan: '+data.digunakan);
-                $('#sisa').html('total sisa :'+parseInt(data.jumlah_poin)-parseInt(data.digunakan));
+                $('#jumlahpoin').html('Total poin: ' + data.jumlah_poin);
+                $('#digunakan').html('Total poin digunakan: ' + data.digunakan);
+                $('#sisa').html('total sisa :' + parseInt(data.jumlah_poin) - parseInt(data.digunakan));
 
 
                 $('#listPoin').html(let_);
             });
         }
-        $('body').delegate('.Detail','click',function(e)
-        {
+        $('body').delegate('.Detail', 'click', function(e) {
             e.preventDefault();
-            window.location.href="{{url('user/get-table-poin')}}/"+$(this).closest('td').data('id_poin');
+            window.location.href = "{{url('user/get-table-poin')}}/" + $(this).closest('td').data('id_poin');
         });
     })
 </script>

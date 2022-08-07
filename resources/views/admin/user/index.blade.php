@@ -9,6 +9,8 @@ Manage User
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
+
 <style>
     .dt-buttons {
         padding-bottom: 20px;
@@ -32,6 +34,11 @@ Manage User
     display: flex;
 
     }
+    .btn.btn-primary.print {
+  margin: 25px 20px -15px 20px;
+    
+}
+
 </style>
 @endsection
 
@@ -64,8 +71,12 @@ Manage User
                     <h3 class="card-title">Daftar Anggota</h3>
                 </div>
                 <!-- /.card-header -->
+                <div>                        
+                <button class="btn btn-primary print" onclick="window.print();return false;">Print</button>
+                
                 <div class="card-body">
                     <table id="user-table" class="table table-bordered table-striped">
+                        
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -73,10 +84,11 @@ Manage User
                                 <th>No. Anggota</th>
                                 <th>Nomor Telefon</th>
                                 <th>Alamat</th>
-                                <th>Aksi</th>
+                                <th class="drop">Aksi</th>
                             </tr>
                         </thead>
                     </table>
+                </div>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -121,7 +133,7 @@ Manage User
                             </div>
                             {{-- <div class="form-group">--}}
                                 {{-- <label>Password</label>--}}
-                                {{-- <div class="input-group" id="show_hide_password">--}}
+                              u{{-- ser-<divclass="input-group"id="show_hide_password --}}">--}}
                                     {{-- <input class="form-control  form-control-border" type="password">--}}
                                     {{-- <div class="input-group-addon">--}}
                                         {{-- <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>--}}
@@ -238,13 +250,13 @@ Manage User
             responsive: true,
             // lengthChange: false,
             // autoWidth: false,
-            dom: `<"row"<"col-md-3" B> <"col-md-1" l> <"col-md-8" f>> rt`, //'Blfrtip',
+            dom: `<"row"<"col-md-2" B> <"col-md-1" l> <"col-md-9" f>> rt`, //'Blfrtip',
             buttons: {
-                buttons: ["excel", "pdf", "print", {
+                buttons: [{
                     text: '+ Tambah user',
                     className: 'btn-primary',
                     action: function(e, dt, node, config) {
-                        $('#action-modal').text('Tambah')
+                        $('#action-modal').text('Tambah ')
                         $('#user-modal').modal('show')
                         $("#user-form")[0].reset();
                         $("#user-form").attr('data-id', '');
@@ -442,21 +454,21 @@ Manage User
                 }
             });
         });
-        $('body').delegate('.btn-login', 'click', function(e) {
-            e.preventDefault();
-            var id_login = $(this).data('id');
-            const Form_item = new FormData();
-            Form_item.append('_token', '{{csrf_token()}}');
-            Form_item.append('id_login', id_login);
+        // $('body').delegate('.btn-login', 'click', function(e) {
+        //     e.preventDefault();
+        //     var id_login = $(this).data('id');
+        //     const Form_item = new FormData();
+        //     Form_item.append('_token', '{{csrf_token()}}');
+        //     Form_item.append('id_login', id_login);
 
-            fetch("{{url('login-member')}}", {
-                method: 'POST',
-                body: Form_item
-            }).then(res => res.json()).then(data => {
+        //     fetch("{{url('login-member')}}", {
+        //         method: 'POST',
+        //         body: Form_item
+        //     }).then(res => res.json()).then(data => {
 
-                window.location.href = '{{url('check')}}';
-            });
-        });
+        //         window.location.href = '{{url('check')}}';
+        //     });
+        // });
 
 
 
