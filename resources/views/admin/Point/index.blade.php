@@ -9,6 +9,8 @@ Manage Point
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
+
 <style>
     .dt-buttons {
         padding-bottom: 20px;
@@ -73,7 +75,11 @@ Manage Point
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-md-9"></div>
+                        <div class="col-md-9">
+                    <a class="btn btn-success" href="/point-transaksi/export"><i class="fa fa-file-excel" aria-hidden="true"></i> Excell</a>
+                    <button class="btn btn-warning print text-white" onclick="window.print();return false;"><i class="fas fa-print text-white" aria-hidden="true"></i> Print</button>
+
+                        </div>
                         <div class="col-md-3">
                             <form id="caripoin">
                                 <div class="input-group">
@@ -85,6 +91,7 @@ Manage Point
                             </form>
                         </div>
                     </div>
+
                     <div style="overflow-x:auto;">
                         <table class="table centerW table table-striped table-bordered">
                             <thead>
@@ -93,7 +100,7 @@ Manage Point
                                 <th>Nama Anggota</th>
                                 <th class="text-center">Poin</th>
                                 <th class="text-center">Tanggal</th>
-                                <th  class="text-center">Aksi</th>
+                                <th  class="text-center drop">Aksi</th>
                             </thead>
                             <tbody id="listPoin">
                             </tbody>
@@ -118,9 +125,13 @@ Manage Point
                 <form id="simpaneditpoin" name="simpaneditpoin">
                     <div class="form-group">
                         <label>Gunakan Poin</label>
-                        <input type="text" name="penguranganpoin" class="form-control">
+                        <input type="number" min="1" name="penguranganpoin" class="form-control">
+                    </div> 
+                    <div class="form-group">
+                        <label>Deskripsi(Catatan)</label>
+                        <input type="text" name="deskripsi" class="form-control">
                     </div>
-                    <button class="btn btn-primary btn-sm" type="sumbit">Gunakan</button>
+                     <button class="btn btn-primary btn-sm" type="sumbit">Gunakan</button>
                 </form>
             </div>
         </div>
@@ -138,6 +149,28 @@ Manage Point
         </div>
     </div>
 </div>
+<div id="RiwayatModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title align-self-center mt-0">Riwayat Poin Yang digunakan</h5>
+            </div>
+            <div class="modal-body text-center">
+               <table class="table">
+                   <thead>
+                       <tr>
+                           <td>Tanggal</td>
+                           <td>Poin digunakan</td>
+                           <td>Deskripsi</td> 
+                       </tr>
+                   </thead>
+                   <tbody id="listHistory"></tbody>
+               </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
@@ -171,11 +204,22 @@ Manage Point
                 }, 5500);
 
             });
-        }
-
+                        }
+                        $('body').delegate('#caripoin','submit',function(e)
+                        {
+                            e.preventDefault();
+                            window.cari=$('input[name="cari"]').val();
+                            gettable();
+                        });
         function gettable() { 
             $('#listPoin').html('<tr><td  class="text-center" colspan="5">Loading...<td></tr>');
-            var url_=window.url_==undefined?'{{url('point/get-table-poin')}}':window.url_;
+            var cari_='';
+            if(window.cari!=undefined)
+            {
+                cari_=window.cari;
+            }
+            var url_=window.url_==undefined?'{{url('point/get-table-poin')}}?cari='+cari_:window.url_+'&cari='+cari_;
+
             fetch(url_, {
                 method: 'GET'
             }).then(res => res.json()).then(data => {
@@ -192,6 +236,8 @@ Manage Point
 
                     <td 
                     data-id_poin="`+key.id_user+`"  data-total="`+key.total+`" class="text-center">
+                    <a href="#" class=" btn btn-success Riwayat"  data-id_user="`+key.id_user+`" title="Riwayat Poin"><i class="fa fa-history" aria-hidden="true"></i></a>
+
                     <a href="#" class=" btn btn-warning Editini"  data-id_user="`+key.id_user+`" title="Gunakan poin"><i class="fa fa-gift" aria-hidden="true"></i></a>
                     <a href="#" class="btn btn-primary Detail" data-id_detail="`+key.id_poin+`" title="Detail"><i class="fa fa-info-circle" aria-hidden="true"></i></i></a>
                     <a href="#" class="btn btn-danger HapusIni" data-id_hapus="`+key.id_poin+`" title="Hapus"><i class="fa fa-trash" aria-hidden="true"></i></a>
@@ -334,7 +380,45 @@ $('body').delegate('#simpaneditpoin', 'submit', function(e) {
             });
 
         });
-        
+     $('body').delegate('.Riwayat', 'click', function(e) {   
+
+            e.preventDefault();
+            window.id_user=$(this).data('id_user');
+
+            $('#RiwayatModal').modal('show');
+        });
+     $('#RiwayatModal').on('shown.bs.modal', function (e) 
+        {
+            e.preventDefault(); 
+                $('#listHistory').empty();
+
+            fetch("{{url('hitsori-poin')}}?id_user=" + window.id_user, {
+                method: 'GET'
+            }).then(res => res.json()).then(data => { 
+                var list_='';
+                for(let ri of data.riwayat)
+                {
+                    list_+=`<tr>
+                                <td>`+ri.created_at+`</td>
+                                <td>`+ri.poin+`</td>
+                                <td>`+ri.deskripsi+`</td>
+                                </tr>`;
+                 
+                }
+                if(list_!='')
+                {
+
+                $('#listHistory').html(list_);
+                }
+                else
+                {
+                $('#listHistory').html('<tr><td colspan="3">Data Kosong</td></tr>');
+
+                }
+            });
+                
+        });
+    
     });
 </script>
 @endsection

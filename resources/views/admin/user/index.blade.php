@@ -71,9 +71,9 @@ Manage User
                     <h3 class="card-title">Daftar Anggota</h3>
                 </div>
                 <!-- /.card-header -->
-                <div>                        
+                <!-- <div>                        
                 <button class="btn btn-primary print" onclick="window.print();return false;">Print</button>
-                
+                 -->
                 <div class="card-body">
                     <table id="user-table" class="table table-bordered table-striped">
                         
@@ -89,7 +89,7 @@ Manage User
                         </thead>
                     </table>
                 </div>
-                </div>
+                <!-- </div> -->
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -133,7 +133,7 @@ Manage User
                             </div>
                             {{-- <div class="form-group">--}}
                                 {{-- <label>Password</label>--}}
-                              u{{-- ser-<divclass="input-group"id="show_hide_password --}}">--}}
+                              {{--<div class="input-group" id="show_hide_password">--}}
                                     {{-- <input class="form-control  form-control-border" type="password">--}}
                                     {{-- <div class="input-group-addon">--}}
                                         {{-- <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>--}}
@@ -250,9 +250,9 @@ Manage User
             responsive: true,
             // lengthChange: false,
             // autoWidth: false,
-            dom: `<"row"<"col-md-2" B> <"col-md-1" l> <"col-md-9" f>> rt`, //'Blfrtip',
+            dom: `<"row"<"col-md-3" B> <"col-md-1" l> <"col-md-8" f>> rt`, //'Blfrtip',
             buttons: {
-                buttons: [{
+                buttons: ["excel", "pdf", "print", {
                     text: '+ Tambah user',
                     className: 'btn-primary',
                     action: function(e, dt, node, config) {
@@ -297,7 +297,7 @@ Manage User
             },
             ],
             columns: [{
-                data: 'username'
+                data: 'id'
             },
             {
                 data: 'name'

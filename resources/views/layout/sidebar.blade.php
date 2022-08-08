@@ -56,13 +56,13 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview ">
-                         <li class="nav-item">
+                         <!-- <li class="nav-item">
                          <a href="{{ route('admin.reward.index') }}" class="nav-link {{Route::currentRouteName() == 'admin.reward.total.index' ? 'active' : ''}}">
                          <i class="far fa-circle nav-icon ml-4"></i>
 
                                 <p>Poin Reward</p>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a href="{{ route('admin.point.index') }}" class="nav-link {{Route::currentRouteName() == 'admin.point.total.index' ? 'active' : ''}}">
                              

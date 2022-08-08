@@ -1,55 +1,16 @@
-@extends('layout.master_user')
-@section('title')
+@extends('layout.master_user') 
+@section('title') 
 Point User
-@endsection
-@section('css')
+@endsection 
+@section('css') 
 <link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
-<style>
-    .btn-secondary {
-        color: #fff;
-        background-color: #0062cc;
-        border-color: #0062cc;
-        box-shadow: none;
-        margin: 2px;
-        margin-top: -1px;
-    }
 
-    .btn-secondary:hover {
-        color: #fff;
-        background-color: #0270e8;
-        border-color: #0270e8;
-    }
-
-    .btn-secondary:focus,
-    .btn-secondary.focus {
-        color: #fff;
-        background-color: #0270e8;
-        border-color: #0270e8;
-        box-shadow: 0 0 0 0 rgba(130, 138, 145, 0.5);
-    }
-
-    .btn-secondary.disabled,
-    .btn-secondary:disabled {
-        color: #fff;
-        background-color: #0270e8;
-        border-color: #0270e8;
-    }
-
-
-    .btn.btn-secondary.print.drop {
-        margin-left: 950px;
-        margin-top: -50px;
-    }
-
-    .table.table-striped.table-bordered.center {
-        margin-top: -10px;
-    }
-</style>
-@endsection
+@endsection 
 @section('content')
-<?php
-
-?>
+@php
+$get_member=DB::table('users')->where('id',Auth::user()->id)->first();
+$jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->member_id)->update(['status'=>'dibaca']);
+@endphp
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -76,7 +37,6 @@ Point User
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Data Poin</h3>
-
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -85,32 +45,32 @@ Point User
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-
                 </div>
                 <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
                     <table>
-                        <tr>
-                            <td id="jumlahpoin"></td>
-                        </tr>
-                        <tr>
-                            <td id="digunakan"></td>
-                        </tr>
-                        <tr>
-                            <td id="sisa"></td>
-                        </tr>
-                    </table>
-                    <button class="btn btn-secondary print drop" onclick="window.print();return false;">Print</button>
-
-                    <div class="card-header">
+                        <tr><td id="jumlahpoin"></td></tr>
+                        <tr><td id="digunakan"></td></tr>
+                        <tr><td id="sisa"></td></tr>
+                        
+                    </table> 
+                    </div>     
+                    <div class="col-3 mt-3">
+                        <button href="#" class="btn btn-success" tittle="Riwayat Poin Anda" id="HistoryPoin"><i class="fa fa-history" aria-hidden="true"></i>  Riwayat Poin</button>
+                        <button class="btn btn-info print" tittle="Cetak Print" onclick="window.print();return false;"><i class="fas fa-print text-white" aria-hidden="true"></i> Cetak</button>
+                    </div>              
+                </div>              
+                    <div class="card-body">
                         <table class="table table-striped table-bordered center">
                             <thead>
                                 <tr class="text-center">
-
-                                    <th>Kode Transaksi</th>
+                                   
+                                <th>Kode Transaksi</th>
                                     <th>Nama Member</th>
                                     <th>Tanggal</th>
                                     <th>Nominal</th>
-                                    <th>Jml Poin</th>
+                                    <th>Jml Poin</th> 
                                     <th class="drop">Aksi</th>
                                 </tr>
                             </thead>
@@ -119,26 +79,46 @@ Point User
                         </table>
                     </div>
                 </div>
+                </div>
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 </div>
-
+<div id="RiwayatModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title align-self-center mt-0">Riwayat Poin Yang digunakan</h5>
+            </div>
+            <div class="modal-body text-center">
+               <table class="table">
+                   <thead>
+                       <tr>
+                           <td>Tanggal</td>
+                           <td>Poin digunakan</td>
+                           <td>Deskripsi</td> 
+                       </tr>
+                   </thead>
+                   <tbody id="listHistory"></tbody>
+               </table>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.content-wrapper -->
 @endsection
 
 @section('script')
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         gettable();
-
         function gettable() {
             fetch("{{url('user/get-table-poin')}}", {
                 method: 'GET'
             }).then(res => res.json()).then(data => {
-                var let_ = '';
+                var let_='';
                 for (let key of data.getpoin.data) {
                     let_ += `<tr class="text-center">
                    
@@ -149,20 +129,45 @@ Point User
                     <td>` + key.jumlah_poin + `</td> 
                     <td data-id_poin="` + key.id_poin + `" 
                     ><d class="btn btn-warning Detail">Detail</a></td>
-                                       </tr>`
-
+                                       </tr>`;
+                                       window.id_user=key.id_user;
+                    
                 }
-                $('#jumlahpoin').html('Total poin: ' + data.jumlah_poin);
-                $('#digunakan').html('Total poin digunakan: ' + data.digunakan);
-                $('#sisa').html('total sisa :' + parseInt(data.jumlah_poin) - parseInt(data.digunakan));
-
-
+                $('#jumlahpoin').html('Total poin: '+data.jumlah_poin);
+                $('#digunakan').html('Total poin digunakan: '+data.digunakan);
+                $('#sisa').html('total sisa :'+parseInt(data.jumlah_poin)-parseInt(data.digunakan));
                 $('#listPoin').html(let_);
             });
         }
-        $('body').delegate('.Detail', 'click', function(e) {
+        $('body').delegate('.Detail','click',function(e)
+        {
             e.preventDefault();
-            window.location.href = "{{url('user/get-table-poin')}}/" + $(this).closest('td').data('id_poin');
+            window.location.href="{{url('user/get-table-poin')}}/"+$(this).closest('td').data('id_poin');
+        });
+         $('body').delegate('#HistoryPoin', 'click', function(e) {   
+            e.preventDefault(); 
+            $('#RiwayatModal').modal('show');
+        });
+     $('#RiwayatModal').on('shown.bs.modal', function (e) 
+        {
+            e.preventDefault(); 
+                $('#listHistory').empty();
+            fetch("{{url('hitsori-poin')}}?id_user=" + window.id_user, {
+                method: 'GET'
+            }).then(res => res.json()).then(data => { 
+                var list_='';
+                for(let ri of data.riwayat)
+                {
+                    list_+=`<tr>
+                                <td>`+ri.created_at+`</td>
+                                <td>`+ri.poin+`</td>
+                                <td>`+ri.deskripsi+`</td>
+                                </tr>`;
+                 
+                }
+                $('#listHistory').html(list_);
+            });
+                
         });
     })
 </script>

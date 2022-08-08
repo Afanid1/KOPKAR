@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,8 +14,19 @@ class DashboardController extends Controller
 {
 	public function index()
 	{
+		$simpananPokok = Wallet::sum('main');
+		$simpananWajib = Wallet::sum('monthly');
+		$simpananSukarela = Wallet::sum('other');
+		// dd($simpananPokok);
 		$jumlah_user = User::all()->count();
-		return view('admin.dashboard')->with('jumlah_user', $jumlah_user);
+
+		$data = [
+			'jumlah_user' => $jumlah_user,
+			'simpananPokok' => $simpananPokok,
+			'simpananWajib' => $simpananWajib,
+			'simpananSukarela' => $simpananSukarela,
+		];
+		return view('admin.dashboard',$data);
 	}
 	public function loginmember(Request $request)
 	{

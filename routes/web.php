@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\AnggotaController;
+use App\Http\Controllers\PointTransactionsController;
 
 
 
@@ -25,6 +26,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login.index');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/login-member', [DashboardController::class, 'loginmember']);
+Route::get('hitsori-poin', [PointController::class, 'hitsoripoin']); 
 
 Route::get('/check', function () {
     if (Auth::user()->roles->name == 'user') {
@@ -40,6 +42,8 @@ Route::get('/check', function () {
 Route::get('/check-multi', function () {
     filterMenu();
 })->middleware('role:user');
+
+Route::get('/point-transaksi/export', [PointTransactionsController::class, 'pointExport']); 
 
 Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -73,8 +77,9 @@ Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
         Route::post('edit-poin-transaksi', [PointController::class, 'editpointransaksi']);
         Route::get('hapus-poin-transaksi', [PointController::class, 'hapuspointransaksi']);
         Route::get('detail-belanja', [PointController::class, 'pointdetailbelanja']);
-        Route::get('total-poin', [PointController::class, 'gettotalpoin']); 
-
+        Route::get('total-poin', [PointController::class, 'gettotalpoin']);
+        
+        // export 
 
 
         Route::group(['prefix' => 'wallet', 'as' => 'wallet.'], function () {
@@ -92,6 +97,8 @@ Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
         Route::get('hapus-poin-transaksi', [PointRewardController::class, 'hapuspointransaksi']);
         Route::get('detail-belanja', [PointRewardController::class, 'pointdetailbelanja']);
         Route::get('total-poin', [PointRewardController::class, 'gettotalpoin']);
+
+
 
         Route::group(['prefix' => 'wallet', 'as' => 'wallet.'], function () {
             Route::get('/', [WalletController::class, 'index'])->name('index');
