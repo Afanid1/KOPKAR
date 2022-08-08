@@ -3,6 +3,8 @@
 Point User
 @endsection 
 @section('css') 
+<link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
+
 @endsection 
 @section('content')
 @php
@@ -35,7 +37,6 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Data Poin</h3>
-
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -44,16 +45,23 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-
                 </div>
                 <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
                     <table>
                         <tr><td id="jumlahpoin"></td></tr>
                         <tr><td id="digunakan"></td></tr>
                         <tr><td id="sisa"></td></tr>
-                         <tr><td ><a href="#" id="HistoryPoin">Riwayat Poin</a></td></tr>
-                    </table>                    
-                    <div class="card-header">
+                        
+                    </table> 
+                    </div>     
+                    <div class="col-3 mt-3">
+                        <button href="#" class="btn btn-success" tittle="Riwayat Poin Anda" id="HistoryPoin"><i class="fa fa-history" aria-hidden="true"></i>  Riwayat Poin</button>
+                        <button class="btn btn-info print" tittle="Cetak Print" onclick="window.print();return false;"><i class="fas fa-print text-white" aria-hidden="true"></i> Cetak</button>
+                    </div>              
+                </div>              
+                    <div class="card-body">
                         <table class="table table-striped table-bordered center">
                             <thead>
                                 <tr class="text-center">
@@ -63,13 +71,14 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
                                     <th>Tanggal</th>
                                     <th>Nominal</th>
                                     <th>Jml Poin</th> 
-                                    <th>Aksi</th>
+                                    <th class="drop">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="listPoin">
                             </tbody>
                         </table>
                     </div>
+                </div>
                 </div>
             </div>
             <!-- /.row -->
@@ -127,8 +136,6 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
                 $('#jumlahpoin').html('Total poin: '+data.jumlah_poin);
                 $('#digunakan').html('Total poin digunakan: '+data.digunakan);
                 $('#sisa').html('total sisa :'+parseInt(data.jumlah_poin)-parseInt(data.digunakan));
-
-
                 $('#listPoin').html(let_);
             });
         }
@@ -138,7 +145,6 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
             window.location.href="{{url('user/get-table-poin')}}/"+$(this).closest('td').data('id_poin');
         });
          $('body').delegate('#HistoryPoin', 'click', function(e) {   
-
             e.preventDefault(); 
             $('#RiwayatModal').modal('show');
         });
@@ -146,7 +152,6 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
         {
             e.preventDefault(); 
                 $('#listHistory').empty();
-
             fetch("{{url('hitsori-poin')}}?id_user=" + window.id_user, {
                 method: 'GET'
             }).then(res => res.json()).then(data => { 

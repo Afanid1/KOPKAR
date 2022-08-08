@@ -72,7 +72,7 @@
 
                         <div class="small-box bg-primary">
                                 <div class="inner">
-                                <h3>250.000</h3>
+                                <h3>{{ number_format($simpananPokok) }}</h3>
                                     <p>Total Simpanan Pokok</p>
                                 </div>
                                 <div class="icon">
@@ -84,7 +84,7 @@
                             <div class="col-md-4">
                         <div class="small-box bg-primary">
                                 <div class="inner">
-                                <h3>100.000</h3>
+                                <h3>{{ number_format($simpananWajib) }}</h3>
                                     <p>Total Simpanan Wajib</p>
                                 </div>
                                 <div class="icon">
@@ -97,7 +97,7 @@
                     <div class="col-md-4">
                         <div class="small-box bg-primary">
                                 <div class="inner">
-                                <h3>120.000</h3>
+                                <h3>{{ number_format($simpananSukarela) }}</h3>
                                     <p>Total Simpanan Sukarela</p>
                                 </div>
                                 <div class="icon">

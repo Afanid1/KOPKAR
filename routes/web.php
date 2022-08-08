@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\AnggotaController;
+use App\Http\Controllers\PointTransactionsController;
 
 
 
@@ -41,6 +42,8 @@ Route::get('/check', function () {
 Route::get('/check-multi', function () {
     filterMenu();
 })->middleware('role:user');
+
+Route::get('/point-transaksi/export', [PointTransactionsController::class, 'pointExport']); 
 
 Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -74,7 +77,9 @@ Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
         Route::post('edit-poin-transaksi', [PointController::class, 'editpointransaksi']);
         Route::get('hapus-poin-transaksi', [PointController::class, 'hapuspointransaksi']);
         Route::get('detail-belanja', [PointController::class, 'pointdetailbelanja']);
-        Route::get('total-poin', [PointController::class, 'gettotalpoin']); 
+        Route::get('total-poin', [PointController::class, 'gettotalpoin']);
+        
+        // export 
 
 
         Route::group(['prefix' => 'wallet', 'as' => 'wallet.'], function () {

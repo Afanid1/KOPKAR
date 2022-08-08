@@ -5,35 +5,7 @@ Keuangan Anggota
 @section('css')
 <link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
 <style>
-    .btn-secondary {
-        color: #fff;
-        background-color: #0062cc;
-        border-color: #0062cc;
-        box-shadow: none;
-        margin: 2px;
-        margin-top: -1px;
-    }
-
-    .btn-secondary:hover {
-        color: #fff;
-        background-color: #0270e8;
-        border-color: #0270e8;
-    }
-
-    .btn-secondary:focus,
-    .btn-secondary.focus {
-        color: #fff;
-        background-color: #0270e8;
-        border-color: #0270e8;
-        box-shadow: 0 0 0 0 rgba(130, 138, 145, 0.5);
-    }
-
-    .btn-secondary.disabled,
-    .btn-secondary:disabled {
-        color: #fff;
-        background-color: #0270e8;
-        border-color: #0270e8;
-    }
+   
 </style>
 @endsection
 @section('content')
@@ -75,7 +47,7 @@ Keuangan Anggota
                 </div>
                 <div class="card-body">
 
-                    <button class="btn btn-secondary print" onclick="window.print();return false;">Print</button>
+                    <button class="btn btn-primary print" onclick="window.print();return false;">Cetak</button>
                     <div style="overflow-x:auto;">
 
                         <table class="table center table-bordered table-striped">
