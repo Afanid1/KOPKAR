@@ -106,10 +106,17 @@ class PointRewardController extends Controller
 
     public function gettablepoint(Request $request)
     {
-        $db_get         = DB::table('tb_poin_fandi')
-            ->select('id_user', DB::raw('sum(jumlah_poin) as total'))
-            ->groupBy('id_user')
-            ->paginate(20);
+       $db         = DB::table('tb_poin_fandi');
+            $db->select('id_user', DB::raw('sum(jumlah_poin) as total'));
+ 
+    if(@$request->input('cari'))
+        {
+            $db->where('id_user','like','%'.@$request->input('cari').'%'); 
+
+            
+        } 
+            $db->groupBy('id_user');
+           $db_get= $db->paginate(20);
         $i = 0;
         foreach ($db_get as $key) {
             $data_pp               = DB::table('tb_poin_fandi')->where('id_user', $key->id_user)->whereNotNull('custmer_partner_name')->first();

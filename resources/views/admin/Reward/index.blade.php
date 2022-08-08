@@ -91,7 +91,7 @@ Manage Point
                                 <th>id_user</th>
                                 <th>custmer_partner_name</th>
                                 <th>Poin Total</th>
-                                <th>Status</th>
+                             <!--    <th>Status</th> -->
                                 <th class="text-center">Aksi</th>
                             </thead>
                             <tbody id="listPoin">
@@ -119,6 +119,10 @@ Manage Point
                         <label>Gunakan Poin</label>
                         <input type="text" name="penguranganpoin" class="form-control">
                     </div>
+                    <div class="form-group">
+                        <label>Deskripsi(Catatan)</label>
+                        <input type="text" name="deskripsi" class="form-control">
+                    </div>
                     <button class="btn btn-primary btn-sm" type="sumbit">Gunakan</button>
                 </form>
             </div>
@@ -133,6 +137,27 @@ Manage Point
                 <h5 class="modal-title align-self-center mt-0">Detail Transaksi</h5>
             </div>
             <div class="modal-body" id="listdetail">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="RiwayatModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title align-self-center mt-0">Riwayat Poin Yang digunakan</h5>
+            </div>
+            <div class="modal-body text-center">
+               <table class="table">
+                   <thead>
+                       <tr>
+                           <td>Tanggal</td>
+                           <td>Poin digunakan</td>
+                           <td>Deskripsi</td> 
+                       </tr>
+                   </thead>
+                   <tbody id="listHistory"></tbody>
+               </table>
             </div>
         </div>
     </div>
@@ -172,10 +197,22 @@ Manage Point
 
             });
         }
-
+$('body').delegate('#caripoin','submit',function(e)
+{
+    e.preventDefault();
+    window.cari=$('input[name="cari"]').val();
+    gettable();
+});
         function gettable() {
             $('#listPoin').html('<tr><td  class="text-center" colspan="5">Loading...<td></tr>');
-            var url_ = window.url_ == undefined ? '{{url('point/get-table-poin')}}': window.url_;
+             var cari_='';
+            if(window.cari!=undefined)
+            {
+                cari_=window.cari;
+            }
+           // var url_ = window.url_ == undefined ? '{{url('reward/get-table-point')}}': window.url_;
+            var url_=window.url_==undefined?'{{url('reward/get-table-point')}}?cari='+cari_:window.url_+'&cari='+cari_;
+
             fetch(url_, {
                 method: 'GET'
             }).then(res => res.json()).then(data => {
@@ -187,14 +224,15 @@ Manage Point
                     <td>` + cs + `</td>  
                     <td>` + key.id_user + `</td> 
                     <td class="text-center">` + key.total + `</td>
-                    <td class="text-center">` + key.status + `</td>
+                    <!--<td class="text-center">` + key.status + `</td>-->
                     
 
                     <td 
                     data-id_poin="` + key.id_user + `"  data-total="` + key.total + `" class="text-center">
+                    <a href="#" class=" btn btn-success Riwayat"  data-id_user="`+key.id_user+`" title="Riwayat Poin"><i class="fa fa-history" aria-hidden="true"></i></a>
                     <a href="#" class="btn btn-warning Editini"  data-id_user="`+key.id_user+`" title="Gunakan poin"><i class="fa fa-gift" aria-hidden="true"></i></a>
-                    <a href="#" class="btn btn-primary Detail" data-id_detail="`+key.id_poin+`" title="Detail"><i class="fa fa-info-circle" aria-hidden="true"></i></i></a>
-                    <a href="#" class="btn btn-danger HapusIni" data-id_hapus="`+key.id_poin+`" title="Hapus"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                   <!-- <a href="#" class="btn btn-primary Detail" data-id_detail="`+key.id_poin+`" title="Detail"><i class="fa fa-info-circle" aria-hidden="true"></i></i></a>
+                    <a href="#" class="btn btn-danger HapusIni" data-id_hapus="`+key.id_poin+`" title="Hapus"><i class="fa fa-trash" aria-hidden="true"></i></a>-->
                         </td>  
                         </tr>`
                     }
@@ -323,6 +361,44 @@ Manage Point
                 });
 
             });
+            $('body').delegate('.Riwayat', 'click', function(e) {   
+
+            e.preventDefault();
+            window.id_user=$(this).data('id_user');
+
+            $('#RiwayatModal').modal('show');
+        });
+     $('#RiwayatModal').on('shown.bs.modal', function (e) 
+        {
+            e.preventDefault(); 
+                $('#listHistory').empty();
+
+            fetch("{{url('hitsori-poin')}}?id_user=" + window.id_user, {
+                method: 'GET'
+            }).then(res => res.json()).then(data => { 
+                var list_='';
+                for(let ri of data.riwayat)
+                {
+                    list_+=`<tr>
+                                <td>`+ri.created_at+`</td>
+                                <td>`+ri.poin+`</td>
+                                <td>`+ri.deskripsi+`</td>
+                                </tr>`;
+                 
+                }
+                if(list_!='')
+                {
+
+                $('#listHistory').html(list_);
+                }
+                else
+                {
+                $('#listHistory').html('<tr><td colspan="3">Data Kosong</td></tr>');
+
+                }
+            });
+                
+        });
 
         });
     </script>

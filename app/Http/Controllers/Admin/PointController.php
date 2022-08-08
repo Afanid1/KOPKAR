@@ -170,7 +170,7 @@ public function hapuspointransaksi(Request $request)
 public function pointdetailbelanja(Request $request)
 {
     $dt_poin=DB::table('tb_poin_fandi')
-    ->select('tb_belanja.*','tb_poin_fandi.tanggal_poin')
+    ->select('tb_belanja.*','tb_poin_fandi.tanggal_poin','tb_poin_fandi.jumlah_poin')
     ->leftJoin('tb_belanja','tb_belanja.no_trax','=','tb_poin_fandi.id_transaksi')
     ->where('tb_poin_fandi.id_poin', $request->input('id_detail'))->first();
     @$dt_poin->atribut=@unserialize($dt_poin->atribut)?unserialize($dt_poin->atribut):array();

@@ -90,8 +90,8 @@ Manage Point
                             <thead>
                                 <!-- <th>id_user</th> -->
                                 <th>Kode Transaksi</th>
-                                <th>Nama Anggota</th>
-                                <th class="text-center">Poin</th>
+                                <th>Nama Anggota</th><!-- 
+                                <th class="text-center">Poin</th> -->
                                 <th class="text-center">Tanggal</th>
                                 <th  class="text-center">Aksi</th>
                             </thead>
@@ -224,14 +224,15 @@ Manage Point
                      
                     <td>` + key.id_transaksi + `</td>
                     <td>` + key.id_user + `</td> 
-                    <td class="text-center">` + key.total + `</td>
+                    <!--<td class="text-center">` + key.total + `</td>-->
                     <td class="text-center">` + key.tanggal_poin + `</td>
 
                     <td 
                     data-id_poin="`+key.id_user+`"  data-total="`+key.total+`" class="text-center">
-                    <a href="#" class=" btn btn-success Riwayat"  data-id_user="`+key.id_user+`" title="Riwayat Poin"><i class="fa fa-history" aria-hidden="true"></i></a>
+                    <!--<a href="#" class=" btn btn-success Riwayat"  data-id_user="`+key.id_user+`" title="Riwayat Poin"><i class="fa fa-history" aria-hidden="true"></i></a>-->
 
-                    <a href="#" class=" btn btn-warning Editini"  data-id_user="`+key.id_user+`" title="Gunakan poin"><i class="fa fa-gift" aria-hidden="true"></i></a>
+                    <!--<a href="#" class=" btn btn-warning Editini"  data-id_user="`+key.id_user+`" title="Gunakan poin"><i class="fa fa-gift" aria-hidden="true"></i></a>-->
+
                     <a href="#" class="btn btn-primary Detail" data-id_detail="`+key.id_poin+`" title="Detail"><i class="fa fa-info-circle" aria-hidden="true"></i></i></a>
                     <a href="#" class="btn btn-danger HapusIni" data-id_hapus="`+key.id_poin+`" title="Hapus"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     </td>  
@@ -314,7 +315,12 @@ Manage Point
                     </tr>`;
                     list_ttl+=k.sub_total;
                 }
-            $('#listdetail').html(`ID Transaksi:`+data.dt_poin.no_trax+`<br>Tanggal :`+data.dt_poin.tanggal_poin+`<table class="table"><tr>
+            $('#listdetail').html(`
+                ID Transaksi:`+data.dt_poin.no_trax+`<br>
+                Tanggal :`+data.dt_poin.tanggal_poin+`<br>
+                Poin Yg didapat :`+data.dt_poin.jumlah_poin+`<br>
+
+                <table class="table"><tr>
                     <td>Nama Barang</td>
                     <td>Harga</td>
                     <td>Qty</td> 
