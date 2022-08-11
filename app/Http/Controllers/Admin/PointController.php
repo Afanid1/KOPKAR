@@ -91,7 +91,9 @@ class PointController extends Controller
                                 'qty'           => @$key_1->{'DETAIL_TRANSACTION_QTY_PRODUCT'},
                                 'harga'         => @$key_1->{'DETAIL_TRANSACTION_PRICE_PRODUCT'},
                                 'sub_total'     => @$key_1->{'PRICE_AFTER_DISCOUNT'},
-                                'nm_barang'     => @$key_1->{'product'}->{'PRODUCT_NAME'}
+                                'nm_barang'     => @$key_1->{'product'}->{'PRODUCT_NAME'},
+                                'nama_anggota'  => @$key_1->{'created_by'}->{'USER_FULLNAME'}
+
                             );
                             $io++;
                         }

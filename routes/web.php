@@ -79,8 +79,7 @@ Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
         Route::get('detail-belanja', [PointController::class, 'pointdetailbelanja']);
         Route::get('total-poin', [PointController::class, 'gettotalpoin']);
         
-        // export 
-
+       
 
         Route::group(['prefix' => 'wallet', 'as' => 'wallet.'], function () {
             Route::get('/', [WalletController::class, 'index'])->name('index');

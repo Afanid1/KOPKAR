@@ -9,6 +9,8 @@ Manage Point
 <link rel="stylesheet" href="{{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
+
 <style>
     .dt-buttons {
         padding-bottom: 20px;
@@ -73,7 +75,11 @@ Manage Point
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-md-9"></div>
+                        <div class="col-md-9">
+                        <a class="btn btn-success" href="/point-transaksi/export"><i class="fa fa-file-excel" aria-hidden="true"></i> Excell</a>
+                        <button class="btn btn-warning print text-white" onclick="window.print();return false;"><i class="fas fa-print text-white" aria-hidden="true"></i> Print</button>
+
+                        </div>
                         <div class="col-md-3">
                             <form id="caripoin">
                                 <div class="input-group">
@@ -88,11 +94,11 @@ Manage Point
                     <div style="overflow-x:auto;">
                         <table class="table centerW table-bordered table table-striped">
                             <thead class="text-center">
-                                <th>id_user</th>
-                                <th>custmer_partner_name</th>
+                                <th>Kasir</th>
+                                <th>Nama Anggota</th>
                                 <th>Poin Total</th>
-                             <!--    <th>Status</th> -->
-                                <th class="text-center">Aksi</th>
+                                <!-- <th>tanggal_poin</th> -->
+                                <th class="text-center drop">Aksi</th>
                             </thead>
                             <tbody id="listPoin">
                             </tbody>
@@ -220,11 +226,12 @@ $('body').delegate('#caripoin','submit',function(e)
                 for (let key of data.db_get.data) {
                     var cs = key.custmer_partner_name ? key.custmer_partner_name : '-';
                     let_ += `<tr>
-                    
                     <td>` + cs + `</td>  
                     <td>` + key.id_user + `</td> 
                     <td class="text-center">` + key.total + `</td>
                     <!--<td class="text-center">` + key.status + `</td>-->
+                    <!--<td class="text-center">` + key.tanggal_poin + `</td>-->
+
                     
 
                     <td 

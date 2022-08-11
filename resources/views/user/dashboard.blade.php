@@ -66,11 +66,14 @@ Dashboard
                                 <span class="info-box-icon btn-light elevation-1 "><i class="fa fa-gift nav-icon"></i></span>
                                 <div class="info-box-content">
                                     <h5 class="info-box-text">Poin Anda</h5>
-              
-                <h3 class="info-box-number ml-2s">
-                                    {{$jumlah_poin}}
+
+                                    <h3 class="info-box-number ml-2s">
+                                        @php 
+                                        $get_member=DB::table('users')->where('id',Auth::user()->id)->first();
+                                        $digunakan         = DB::table('tb_poin_dipakai')->where('id_user',@$get_member->member_id)->sum('poin');     
+                                        @endphp
+                                        {{$jumlah_poin-$digunakan}}
                                     </h3> 
-             
                                 </div>
                             </div>
                         </div>

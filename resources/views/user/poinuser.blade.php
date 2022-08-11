@@ -52,9 +52,8 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
                     <table>
                         <tr><td id="jumlahpoin"></td></tr>
                         <tr><td id="digunakan"></td></tr>
-                        <tr><td id="sisa"></td></tr>
-                        
-                    </table> 
+                        <tr><td id="sisapoin"></td></tr>
+                        </table> 
                     </div>     
                     <div class="col-3 mt-3">
                         <button href="#" class="btn btn-success" tittle="Riwayat Poin Anda" id="HistoryPoin"><i class="fa fa-history" aria-hidden="true"></i>  Riwayat Poin</button>
@@ -122,20 +121,21 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
                 for (let key of data.getpoin.data) {
                     let_ += `<tr class="text-center">
                    
-                                        <td>` + key.id_transaksi + `</td>
+                    <td>` + key.id_transaksi + `</td>
                     <td>` + key.id_user + `</td>
                     <td>` + key.tanggal_poin + `</td>
                     <td>` + key.nominal + `</td>
                     <td>` + key.jumlah_poin + `</td> 
                     <td data-id_poin="` + key.id_poin + `" 
                     ><d class="btn btn-warning Detail">Detail</a></td>
-                                       </tr>`;
-                                       window.id_user=key.id_user;
+                    </tr>`;
+                    window.id_user=key.id_user;
                     
                 }
                 $('#jumlahpoin').html('Total poin: '+data.jumlah_poin);
-                $('#digunakan').html('Total poin digunakan: '+data.digunakan);
-                $('#sisa').html('total sisa :'+parseInt(data.jumlah_poin)-parseInt(data.digunakan));
+                $('#digunakan').html('Poin Digunakan: '+data.digunakan);
+                var sisa_poin=parseInt(data.jumlah_poin)-parseInt(data.digunakan);
+                $('#sisapoin').html('Sisa Poin :'+sisa_poin);
                 $('#listPoin').html(let_);
             });
         }

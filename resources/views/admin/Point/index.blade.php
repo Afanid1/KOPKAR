@@ -97,8 +97,8 @@ Manage Point
                             <thead>
                                 <!-- <th>id_user</th> -->
                                 <th>Kode Transaksi</th>
-                                <th>Nama Anggota</th><!-- 
-                                <th class="text-center">Poin</th> -->
+                                <th>Nama Anggota</th> 
+                                <th class="text-center">Poin</th> 
                                 <th class="text-center">Tanggal</th>
                                 <th  class="text-center drop">Aksi</th>
                             </thead>
@@ -231,7 +231,7 @@ Manage Point
                      
                     <td>` + key.id_transaksi + `</td>
                     <td>` + key.id_user + `</td> 
-                    <!--<td class="text-center">` + key.total + `</td>-->
+                    <td class="text-center">` + key.total + `</td>
                     <td class="text-center">` + key.tanggal_poin + `</td>
 
                     <td 
@@ -241,7 +241,7 @@ Manage Point
                     <!--<a href="#" class=" btn btn-warning Editini"  data-id_user="`+key.id_user+`" title="Gunakan poin"><i class="fa fa-gift" aria-hidden="true"></i></a>-->
 
                     <a href="#" class="btn btn-primary Detail" data-id_detail="`+key.id_poin+`" title="Detail"><i class="fa fa-info-circle" aria-hidden="true"></i></i></a>
-                    <a href="#" class="btn btn-danger HapusIni" data-id_hapus="`+key.id_poin+`" title="Hapus"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    <!--<a href="#" class="btn btn-danger HapusIni" data-id_hapus="`+key.id_poin+`" title="Hapus"><i class="fa fa-trash" aria-hidden="true"></i></a>-->
                     </td>  
                     </tr>`
                 }
@@ -323,10 +323,24 @@ Manage Point
                     list_ttl+=k.sub_total;
                 }
             $('#listdetail').html(`
-                ID Transaksi:`+data.dt_poin.no_trax+`<br>
-                Tanggal :`+data.dt_poin.tanggal_poin+`<br>
-                Poin Yg didapat :`+data.dt_poin.jumlah_poin+`<br>
-
+            <table >
+            <tr>
+                <td>ID Transaksi</td>
+                <td> : </td>
+                <td>`+data.dt_poin.no_trax+`</td>
+                
+            </tr>
+            <tr>
+                <td>Tanggal </td>
+                <td> : </td>
+                <td> `+data.dt_poin.tanggal_poin+`</td>
+            </tr>
+            <tr>
+                <td>Poin Didapat</td>
+                <td> : </td>
+                <td> `+data.dt_poin.jumlah_poin+`</td>
+            </tr>
+            </table>
                 <table class="table"><tr>
                     <td>Nama Barang</td>
                     <td>Harga</td>
@@ -369,7 +383,7 @@ $('body').delegate('#simpaneditpoin', 'submit', function(e) {
             var total_=parseInt(window.total_poin)-parseInt($('input[name="penguranganpoin"]').val()); 
             if(total_<1)
             {
-                alert('poin tidak mencukupi');
+                alert('Poin Anda Tidak Mencukupi');
                 return;
             }
             const simpaneditpoin = document.forms.namedItem('simpaneditpoin');
@@ -408,7 +422,7 @@ $('body').delegate('#simpaneditpoin', 'submit', function(e) {
                                 <td>`+ri.created_at+`</td>
                                 <td>`+ri.poin+`</td>
                                 <td>`+ri.deskripsi+`</td>
-                                </tr>`;
+                            </tr>`;
                  
                 }
                 if(list_!='')

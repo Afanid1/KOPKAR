@@ -49,18 +49,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                    <div class="col-md-4">
-                            <div class="small-box bg-primary">
-                                <div class="inner">
-                                <h3>{{ $jumlah_user }}</h3>
-                                    <p>Total Anggota</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-bag"></i>
-                                </div>
-                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                            </div>
-                        </div>
+                    
                         <!-- <div class="col-md-4">
                             <div class="card bg-primary">
                                 <div class="card-body">Total Anggota
@@ -76,7 +65,7 @@
                                     <p>Total Simpanan Pokok</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-bag"></i>
+                                <i class="fas fa-comment-dollar"></i>
                                 </div>
                                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
@@ -88,7 +77,7 @@
                                     <p>Total Simpanan Wajib</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-bag"></i>
+                                <i class="fas fa-comments-dollar"></i>
                                 </div>
                                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
@@ -101,12 +90,24 @@
                                     <p>Total Simpanan Sukarela</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-bag"></i>
+                                <i class="fas fa-donate"></i>
                                 </div>
                                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                            <div class="small-box bg-primary">
+                                <div class="inner">
+                                <h3>{{ $jumlah_user }}</h3>
+                                    <p>Total Anggota</p>
+                                </div>
+                                <div class="icon">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
                 </div>
                 </div>
             </div>

@@ -81,7 +81,7 @@ Manage User
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>No. Anggota</th>
+                                <th>Kode Anggota</th>
                                 <th>Nomor Telefon</th>
                                 <th>Alamat</th>
                                 <th class="drop">Aksi</th>

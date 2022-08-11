@@ -11,6 +11,6 @@ class PointTransactionsController extends Controller
     public function pointExport()
     {
         // dd('da;')
-        return Excel::download(new PointTransaksi, 'point-transaksi.xlsx');
+        return Excel::download(new PointTransaksi, 'Point-transaksi.xlsx');
     }
 }
