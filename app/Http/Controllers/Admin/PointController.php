@@ -54,7 +54,7 @@ class PointController extends Controller
 
                     $nominal_awal   = @$key->{'TRANSACTION_TOTAL'};
 
-                    $db_get         = DB::table('tb_poin_fandi')
+                    $db_get         = DB::table('tb_poin_transaksi')
                     //strtolower untuk merubah string menjadi huruf kecil. 
                     ->where('id_user', strtolower(@$key->{'created_by'}->{'USER_FULLNAME'}))
                     ->whereDate('tanggal_poin', $created_at)
@@ -70,10 +70,10 @@ class PointController extends Controller
                     
                     $ttl_           = (floor(($nom + $nominal_awal) / $nominal_min)) - $totalpoinsebelumnya;
                     $ttl_           =$ttl_>0?$ttl_:0;
-                    $db_get         = DB::table('tb_poin_fandi')->where('id_transaksi', @$key->{'TRANSACTION_ID'})->first(); 
+                    $db_get         = DB::table('tb_poin_transaksi')->where('id_transaksi', @$key->{'TRANSACTION_ID'})->first(); 
                     if (!$db_get) 
                     {
-                        DB::table('tb_poin_fandi')->insert(
+                        DB::table('tb_poin_transaksi')->insert(
                             [
                                 'jumlah_poin'           => $ttl_,
                                 'id_transaksi'          => @$key->{'TRANSACTION_ID'},
@@ -116,14 +116,14 @@ class PointController extends Controller
 
     public function gettablepoin(Request $request)
     {
-        $dt         = DB::table('tb_poin_fandi'); 
-        $dt->select('tb_poin_fandi.*', 'tb_poin_fandi.jumlah_poin as total'); 
-        $dt->where('tb_poin_fandi.status','aktif');
+        $dt         = DB::table('tb_poin_transaksi'); 
+        $dt->select('tb_poin_transaksi.*', 'tb_poin_transaksi.jumlah_poin as total'); 
+        $dt->where('tb_poin_transaksi.status','aktif');
         if(@$request->input('cari'))
         {
-            $dt->where('tb_poin_fandi.id_user','like','%'.@$request->input('cari').'%');
-            $dt->Orwhere('tb_poin_fandi.status','aktif'); 
-            $dt->where('tb_poin_fandi.custmer_partner_name','like','%'.@$request->input('cari').'%');
+            $dt->where('tb_poin_transaksi.id_user','like','%'.@$request->input('cari').'%');
+            $dt->Orwhere('tb_poin_transaksi.status','aktif'); 
+            $dt->where('tb_poin_transaksi.custmer_partner_name','like','%'.@$request->input('cari').'%');
 
             
         }
@@ -163,7 +163,7 @@ class PointController extends Controller
 }
 public function hapuspointransaksi(Request $request)
 {
-    DB::table('tb_poin_fandi')
+    DB::table('tb_poin_transaksi')
     ->where('id_poin', $request->input('id_poin'))
     ->update(['status'  => 'hapus']);
     print json_encode(array('error' => false));
@@ -171,10 +171,10 @@ public function hapuspointransaksi(Request $request)
 }
 public function pointdetailbelanja(Request $request)
 {
-    $dt_poin=DB::table('tb_poin_fandi')
-    ->select('tb_belanja.*','tb_poin_fandi.tanggal_poin','tb_poin_fandi.jumlah_poin')
-    ->leftJoin('tb_belanja','tb_belanja.no_trax','=','tb_poin_fandi.id_transaksi')
-    ->where('tb_poin_fandi.id_poin', $request->input('id_detail'))->first();
+    $dt_poin=DB::table('tb_poin_transaksi')
+    ->select('tb_belanja.*','tb_poin_transaksi.tanggal_poin','tb_poin_transaksi.jumlah_poin')
+    ->leftJoin('tb_belanja','tb_belanja.no_trax','=','tb_poin_transaksi.id_transaksi')
+    ->where('tb_poin_transaksi.id_poin', $request->input('id_detail'))->first();
     @$dt_poin->atribut=@unserialize($dt_poin->atribut)?unserialize($dt_poin->atribut):array();
 
     print json_encode(array('dt_poin' =>$dt_poin));
@@ -182,7 +182,7 @@ public function pointdetailbelanja(Request $request)
 } 
 public function gettotalpoin(Request $request)
 {
-    $jumlah_poin         = DB::table('tb_poin_fandi') 
+    $jumlah_poin         = DB::table('tb_poin_transaksi') 
     ->where('id_user','like', $request->input('id_user'))  
     ->where('status','=','aktif')  
 

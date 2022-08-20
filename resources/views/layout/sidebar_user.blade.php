@@ -14,7 +14,7 @@
                 <img src="{{asset('dist/img/member.png')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{Auth::user()->name}}</a>
+                <a href="/user/dashboard" class="d-block">{{Auth::user()->name}}</a>
             </div>
         </div>
         <nav class="mt-2">

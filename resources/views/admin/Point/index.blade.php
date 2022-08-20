@@ -1,7 +1,7 @@
 @extends('layout.master')
 
 @section('title')
-Manage Point
+Point Reward
 @endsection
 
 @section('css')

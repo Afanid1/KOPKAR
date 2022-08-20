@@ -101,6 +101,7 @@ Detail Data Transaksi
                         </tr>
                     </table>
                     <button class="btn btn-secondary print" onclick="window.print();return false;">Cetak</button>
+                    <div style="overflow-x:auto;">
 
                     <table class="table centerW">
                         <tr>
@@ -128,6 +129,7 @@ Detail Data Transaksi
                             <th>{{$total}}</th>
                         </tr>
                     </table>
+                </div>
                 </div>
             </div>
             <!-- /.row -->

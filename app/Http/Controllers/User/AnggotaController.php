@@ -14,12 +14,12 @@ class AnggotaController extends Controller
 	{
 		$get_member=DB::table('users')->where('id',Auth::user()->id)->first();
 
-		$getpoin=DB::table('tb_poin_fandi')->where('id_user',@$get_member->member_id)->where('status','aktif')->orderBy('tanggal_poin','DESC')->paginate(20);
+		$getpoin=DB::table('tb_poin_transaksi')->where('id_user',@$get_member->member_id)->where('status','aktif')->orderBy('tanggal_poin','DESC')->paginate(20);
    
-		   $jumlah_poin         = DB::table('tb_poin_fandi')->where('id_user',@$get_member->member_id)->sum('jumlah_poin');
+		   $jumlah_poin         = DB::table('tb_poin_transaksi')->where('id_user',@$get_member->member_id)->sum('jumlah_poin');
 		   $digunakan         = DB::table('tb_poin_dipakai')->where('id_user',@$get_member->member_id)->sum('poin');
 	
-		$jumlah_poin= DB::table('tb_poin_fandi')->where('id_user',@$get_member->member_id)->sum('jumlah_poin');
+		$jumlah_poin= DB::table('tb_poin_transaksi')->where('id_user',@$get_member->member_id)->sum('jumlah_poin');
 		$other_payments = DB::table('other_payments')->where('user_id', Auth::user()->id)->sum('amount');
 		$main_payments = DB::table('main_payments')->where('user_id', Auth::user()->id)->sum('amount');
 		$monthly_payments = DB::table('monthly_payments')->where('user_id', Auth::user()->id)->sum('amount');
@@ -83,9 +83,9 @@ public function keuanganuser(Request $request)
 	{
 	 $get_member=DB::table('users')->where('id',Auth::user()->id)->first();
 
-	 $getpoin=DB::table('tb_poin_fandi')->where('id_user',@$get_member->member_id)->where('status','aktif')->orderBy('tanggal_poin','DESC')->paginate(20);
+	 $getpoin=DB::table('tb_poin_transaksi')->where('id_user',@$get_member->member_id)->where('status','aktif')->orderBy('tanggal_poin','DESC')->paginate(20);
 
-		$jumlah_poin         = DB::table('tb_poin_fandi')->where('id_user',@$get_member->member_id)->sum('jumlah_poin');
+		$jumlah_poin         = DB::table('tb_poin_transaksi')->where('id_user',@$get_member->member_id)->sum('jumlah_poin');
 		$digunakan         = DB::table('tb_poin_dipakai')->where('id_user',@$get_member->member_id)->sum('poin');
 
 		print json_encode(array('getpoin' => $getpoin,'jumlah_poin'=>$jumlah_poin,'digunakan'=>$digunakan));
@@ -94,11 +94,11 @@ public function keuanganuser(Request $request)
 	}
 	 public function gettablepoindetail(Request $request)
 	{
-		$detail_trk=DB::table('tb_poin_fandi')
-		->select('tb_poin_fandi.*','tb_belanja.atribut')
-		->leftJoin('tb_belanja','tb_belanja.no_trax','=','tb_poin_fandi.id_transaksi')
+		$detail_trk=DB::table('tb_poin_transaksi')
+		->select('tb_poin_transaksi.*','tb_belanja.atribut')
+		->leftJoin('tb_belanja','tb_belanja.no_trax','=','tb_poin_transaksi.id_transaksi')
 
-		->where('tb_poin_fandi.id_poin',@$request->id_poin)
+		->where('tb_poin_transaksi.id_poin',@$request->id_poin)
 		->first();
 		@$detail_trk->atribut=@unserialize(@$detail_trk->atribut)?@unserialize(@$detail_trk->atribut):array();  
 	 return view('user.poinuserdetail',compact('detail_trk'));

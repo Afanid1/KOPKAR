@@ -4,7 +4,16 @@ Point User
 @endsection 
 @section('css') 
 <link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
-
+<style>
+   @media screen and (max-width: 375px) {
+    .btn-info {
+        margin-left: -28px;
+     }
+   .btn-success {
+        margin-left: -28px;
+  }
+}
+</style>
 @endsection 
 @section('content')
 @php
@@ -61,6 +70,7 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
                     </div>              
                 </div>              
                     <div class="card-body">
+                    <div style="overflow-x:auto;">
                         <table class="table table-striped table-bordered center">
                             <thead>
                                 <tr class="text-center">
@@ -76,6 +86,7 @@ $jmriwayat=DB::table('tb_riwayat_point')->where('id_user','like',@$get_member->m
                             <tbody id="listPoin">
                             </tbody>
                         </table>
+                    </div>
                     </div>
                 </div>
                 </div>

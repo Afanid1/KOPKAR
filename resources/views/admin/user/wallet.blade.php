@@ -146,10 +146,10 @@ Keuangan Anggota
             processing: true,
             serverSide: true,
             ajax: "{{route('admin.user.wallet.ajax')}}",
-            // responsive: true,
+            responsive: true,
             // lengthChange: false,
             // autoWidth: true,
-            dom: `<"row"<"col-md-2" B> <"col-md-2" l> <"col-md-8" f>> rt`, //'Blfrtip',
+            dom: `<"row"<"col-md-3" B> <"col-md-1" l> <"col-md-8" f>> rt`, //'Blfrtip',
             buttons: {
                 buttons: ["excel", "pdf", "print"],
             },

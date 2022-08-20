@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\AllRewardPointExport;
 use App\Http\Controllers\Controller;
 use App\Models\OtherPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PointRewardController extends Controller
 {
@@ -49,7 +51,7 @@ class PointRewardController extends Controller
                     //echo '<pre>';
                     $nominal_awal   = @$key->{'TRANSACTION_TOTAL'};
                     // echo '</pre>';
-                    $db_get         = DB::table('tb_poin_fandi')
+                    $db_get         = DB::table('tb_poin_transaksi')
                         ->where('id_user', strtolower(@$key->{'created_by'}->{'USER_FULLNAME'}))
                         //->whereDate('tanggal_poin', $created_at)
                         ->where('status', 'aktif')
@@ -63,9 +65,9 @@ class PointRewardController extends Controller
 
                     if ($nominal_awal > $nominal_min) {
                         $ttl_           = (floor(($nom + $nominal_awal) / $nominal_min)) - $totalpoinsebelumnya;
-                        $db_get         = DB::table('tb_poin_fandi')->where('id_transaksi', @$key->{'TRANSACTION_ID'})->first();
+                        $db_get         = DB::table('tb_poin_transaksi')->where('id_transaksi', @$key->{'TRANSACTION_ID'})->first();
                         if (!$db_get) {
-                            DB::table('tb_poin_fandi')->insert(
+                            DB::table('tb_poin_transaksi')->insert(
                                 [
                                     'jumlah_poin'           => abs($ttl_),
                                     'id_transaksi'          => @$key->{'TRANSACTION_ID'},
@@ -104,22 +106,24 @@ class PointRewardController extends Controller
         print json_encode(array('error' => $error));
     }
 
+    public function cetak()
+    {
+        return Excel::download(new AllRewardPointExport, 'All-reward-transaksi.xlsx');
+    }
+
     public function gettablepoint(Request $request)
     {
-       $db         = DB::table('tb_poin_fandi');
-            $db->select('id_user', DB::raw('sum(jumlah_poin) as total'));
- 
-    if(@$request->input('cari'))
-        {
-            $db->where('id_user','like','%'.@$request->input('cari').'%'); 
+        $db         = DB::table('tb_poin_transaksi');
+        $db->select('id_user', DB::raw('sum(jumlah_poin) as total'));
 
-            
-        } 
-            $db->groupBy('id_user');
-           $db_get= $db->paginate(20);
+        if (@$request->input('cari')) {
+            $db->where('id_user', 'like', '%' . @$request->input('cari') . '%');
+        }
+        $db->groupBy('id_user');
+        $db_get = $db->paginate(20);
         $i = 0;
         foreach ($db_get as $key) {
-            $data_pp               = DB::table('tb_poin_fandi')->where('id_user', $key->id_user)->whereNotNull('custmer_partner_name')->first();
+            $data_pp               = DB::table('tb_poin_transaksi')->where('id_user', $key->id_user)->whereNotNull('custmer_partner_name')->first();
             $poin_ygdigunakan         = DB::table('tb_poin_dipakai')->where('id_user', $key->id_user)->first();
             $db_get[$i]->id_user = $data_pp->id_user;
             $db_get[$i]->custmer_partner_name = $data_pp->custmer_partner_name;
@@ -144,7 +148,7 @@ class PointRewardController extends Controller
     }
     public function hapuspointransaksi(Request $request)
     {
-        DB::table('tb_poin_fandi')
+        DB::table('tb_poin_transaksi')
             ->where('id_poin', $request->input('id_poin'))
             ->update(['status'  => 'hapus']);
         print json_encode(array('error' => false));

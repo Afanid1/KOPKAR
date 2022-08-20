@@ -178,9 +178,9 @@ Dashboard
             scrollY: "50vh",
             scrollX: true,
             ajax: "{{route('admin.payment.main.ajax')}}",
-            responsive: true,
+            // responsive: true,
             // lengthChange: false,
-            autoWidth: true,
+            // autoWidth: true,
             columnDefs: [{
                     targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
                     "defaultContent": "",

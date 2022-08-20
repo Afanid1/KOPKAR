@@ -28,17 +28,17 @@ Manage User
         border: 1px solid rgba(0, 0, 0, .15);
         border-radius: .25rem;
     }
-    
-        .tmbl-usr{
-     text-align: center;
-    display: flex;
+
+    .tmbl-usr {
+        text-align: center;
+        display: flex;
 
     }
-    .btn.btn-primary.print {
-  margin: 25px 20px -15px 20px;
-    
-}
 
+    .btn.btn-primary.print {
+        margin: 25px 20px -15px 20px;
+
+    }
 </style>
 @endsection
 
@@ -76,7 +76,7 @@ Manage User
                  -->
                 <div class="card-body">
                     <table id="user-table" class="table table-bordered table-striped">
-                        
+
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -132,13 +132,13 @@ Manage User
                                 </div>
                             </div>
                             {{-- <div class="form-group">--}}
-                                {{-- <label>Password</label>--}}
-                              {{--<div class="input-group" id="show_hide_password">--}}
-                                    {{-- <input class="form-control  form-control-border" type="password">--}}
-                                    {{-- <div class="input-group-addon">--}}
-                                        {{-- <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>--}}
-                                    {{-- </div>--}}
-                                {{-- </div>--}}
+                            {{-- <label>Password</label>--}}
+                            {{--<div class="input-group" id="show_hide_password">--}}
+                            {{-- <input class="form-control  form-control-border" type="password">--}}
+                            {{-- <div class="input-group-addon">--}}
+                            {{-- <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>--}}
+                            {{-- </div>--}}
+                            {{-- </div>--}}
                             {{-- </div>--}}
                             <div class="form-group">
                                 <label>Tanggal Registrasi <span class="text-danger">*</span> </label>
@@ -165,8 +165,8 @@ Manage User
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Name Store</label>
-                                @php 
-                                $tb_poin=DB::table('tb_poin_fandi')->select('id_user')->groupBy('id_user')->get();
+                                @php
+                                $tb_poin=DB::table('tb_poin_transaksi')->select('id_user')->groupBy('id_user')->get();
                                 @endphp
                                 <select name="member_id" class="form-control">
                                     @foreach(@$tb_poin as $key)
@@ -272,20 +272,20 @@ Manage User
                 }
             },
             columnDefs: [{
-                targets: 0,
-                createdCell: function(td, cellData, rowData, row, col) {
-                    $(td).text(row + 1)
-                }
-            },
-            {
-                targets: -1,
-                title: 'Aksi',
-                orderable: false,
-                createdCell: function(td, cellData, rowData, row, col) {
-                    $(td).addClass('tmbl-usr');
+                    targets: 0,
+                    createdCell: function(td, cellData, rowData, row, col) {
+                        $(td).text(row + 1)
+                    }
                 },
-                render: function(data, type, full, meta) {
-                    return '\
+                {
+                    targets: -1,
+                    title: 'Aksi',
+                    orderable: false,
+                    createdCell: function(td, cellData, rowData, row, col) {
+                        $(td).addClass('tmbl-usr');
+                    },
+                    render: function(data, type, full, meta) {
+                        return '\
                     <a href="javascript:void(0);" data-id="' + full.id + '" class="btn-edit btn btn-md btn-outline-primary btn-icon" title="Edit details">\
                     <i class="fa fa-edit"></i>\
                     </a>\
@@ -293,27 +293,27 @@ Manage User
                     <i class="fa fa-trash"></i>\
                     </a>\
                                        ';
+                    },
                 },
-            },
             ],
             columns: [{
-                data: 'id'
-            },
-            {
-                data: 'name'
-            },
-            {
-                data: 'member_id'
-            },
-            {
-                data: 'phone_number'
-            },
-            {
-                data: 'address'
-            },
-            {
-                data: 'id'
-            },
+                    data: 'id'
+                },
+                {
+                    data: 'name'
+                },
+                {
+                    data: 'member_id'
+                },
+                {
+                    data: 'phone_number'
+                },
+                {
+                    data: 'address'
+                },
+                {
+                    data: 'id'
+                },
             ]
         });
 
@@ -337,7 +337,7 @@ Manage User
                     $('#user-form input:radio[name=status]').filter(+data.user.status == 1 ? '[value=1]' : '[value=0]').attr('checked', true);
 
                     //$("#user-form #member_id").val(data.user.member_id);
-                    $('select[name="member_id"]').find('option[value="'+data.user.member_id+'"]').attr('selected','selected');
+                    $('select[name="member_id"]').find('option[value="' + data.user.member_id + '"]').attr('selected', 'selected');
                     $("#user-form #name").val(data.user.name);
                     $("#user-form #phone_number").val(data.user.phone_number);
                     $("#user-form #address").val(data.user.address);
@@ -362,50 +362,50 @@ Manage User
         $('#user-table').on('click', '.btn-delete', function() {
             var id = $(this).data('id');
             Swal.fire({
-                title: "Menghapus Data User",
-                text: "Apakah anda yakin ingin menghapus data ini?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-            })
-            .then((result) => {
-                if (result.value) {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{url('/user/destroy')}}/" + id,
-                        contentType: false,
-                        processData: false,
-                        beforeSend: function() {
-                            swal.fire({
-                                text: "Please Wait...",
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                                allowEnterKey: false,
-                                onOpen: function() {
-                                    Swal.showLoading()
-                                }
-                            });
-                        },
-                        success: function(data) {
-                            table.ajax.reload();
-                            swal.close()
-                            swal.fire({
-                                text: data.message,
-                                icon: data.code == 600 ? "warning" : "success"
-                            });
-                        },
-                        error: function(res, exception) {
-                            swal.close()
-                            swal.fire({
-                                text: "Data gagal terhapus!",
-                                icon: "error"
-                            });
-                        }
-                    });
-                }
-            });
+                    title: "Menghapus Data User",
+                    text: "Apakah anda yakin ingin menghapus data ini?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                })
+                .then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: "POST",
+                            url: "{{url('/user/destroy')}}/" + id,
+                            contentType: false,
+                            processData: false,
+                            beforeSend: function() {
+                                swal.fire({
+                                    text: "Please Wait...",
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false,
+                                    onOpen: function() {
+                                        Swal.showLoading()
+                                    }
+                                });
+                            },
+                            success: function(data) {
+                                table.ajax.reload();
+                                swal.close()
+                                swal.fire({
+                                    text: data.message,
+                                    icon: data.code == 600 ? "warning" : "success"
+                                });
+                            },
+                            error: function(res, exception) {
+                                swal.close()
+                                swal.fire({
+                                    text: "Data gagal terhapus!",
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    }
+                });
         });
 
         $('#user-modal').on('click', '#btn_form', function() {

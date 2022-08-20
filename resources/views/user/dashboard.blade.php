@@ -35,7 +35,7 @@ Dashboard
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard v1</li>
+                        <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -83,7 +83,7 @@ Dashboard
                                 <div class="info-box-content">
                                     <h5 class="info-box-text">Total Simpanan Anda</h5>
                                     <h3 class="info-box-number ml-2s">
-                                        {{ $wallets }}
+                                        {{number_format($wallets)}}
                                     </h3>
                                 </div>
                             </div>
@@ -94,38 +94,41 @@ Dashboard
                         <div class="col-md-4">
                             <div class="small-box bg-primary">
                                 <div class="inner">
-                                    <h3>{{$main_payments}}</h3>
+                                    <h3>{{number_format($main_payments)}}</h3>
                                     <p>Total Simpan Pokok</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-bag"></i>
+                                <i class="fas fa-donate"></i>
+
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="/user/payment/list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="small-box bg-primary">
                                 <div class="inner">
-                                    <h3>{{$monthly_payments}}</h3>
+                                    <h3>{{number_format($monthly_payments)}}</h3>
 
                                     <p>Total Simpan Wajib</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-bag"></i>
+                                <i class="fas fa-donate"></i>
+
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="/user/payment/monthly/list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="small-box bg-primary">
                                 <div class="inner">
-                                    <h3>{{$other_payments}}</h3>
+                                    <h3>{{number_format($other_payments)}}</h3>
                                     <p>Total Simpan Sukarela</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="ion ion-bag"></i>
+                                                                <i class="fas fa-donate"></i>
+
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="/user/payment/other/list" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>

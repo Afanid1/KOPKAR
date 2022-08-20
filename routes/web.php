@@ -26,7 +26,10 @@ Route::get('/login', [AuthController::class, 'login'])->name('login.index');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/login-member', [DashboardController::class, 'loginmember']);
-Route::get('hitsori-poin', [PointController::class, 'hitsoripoin']); 
+Route::get('hitsori-poin', [PointController::class, 'hitsoripoin']);
+
+
+Route::get('/cetak-poin', [PointRewardController::class, 'cetak']);
 
 Route::get('/check', function () {
     if (Auth::user()->roles->name == 'user') {
@@ -43,7 +46,7 @@ Route::get('/check-multi', function () {
     filterMenu();
 })->middleware('role:user');
 
-Route::get('/point-transaksi/export', [PointTransactionsController::class, 'pointExport']); 
+Route::get('/point-transaksi/export', [PointTransactionsController::class, 'pointExport']);
 
 Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -78,8 +81,8 @@ Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
         Route::get('hapus-poin-transaksi', [PointController::class, 'hapuspointransaksi']);
         Route::get('detail-belanja', [PointController::class, 'pointdetailbelanja']);
         Route::get('total-poin', [PointController::class, 'gettotalpoin']);
-        
-       
+
+
 
         Route::group(['prefix' => 'wallet', 'as' => 'wallet.'], function () {
             Route::get('/', [WalletController::class, 'index'])->name('index');

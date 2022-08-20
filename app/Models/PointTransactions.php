@@ -9,6 +9,6 @@ class PointTransactions extends Model
 {
     use HasFactory;
 
-    protected $table = 'tb_poin_fandi';
+    protected $table = 'tb_poin_transaksi';
     protected $guarded = [];
 }
