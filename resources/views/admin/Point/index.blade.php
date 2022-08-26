@@ -33,8 +33,8 @@ Point Reward
         padding-top: 50px;
     }
     i.fa.fa-gift {
-    color: ghostwhite;
-}
+        color: ghostwhite;
+    }
 </style>
 @endsection
 
@@ -76,8 +76,8 @@ Point Reward
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-md-9">
-                    <a class="btn btn-success" href="/point-transaksi/export"><i class="fa fa-file-excel" aria-hidden="true"></i> Excell</a>
-                    <button class="btn btn-warning print text-white" onclick="window.print();return false;"><i class="fas fa-print text-white" aria-hidden="true"></i> Print</button>
+                            <a class="btn btn-success" href="/point-transaksi/export"><i class="fa fa-file-excel" aria-hidden="true"></i> Excell</a>
+                            <button class="btn btn-warning print text-white" onclick="window.print();return false;"><i class="fas fa-print text-white" aria-hidden="true"></i> Print</button>
 
                         </div>
                         <div class="col-md-3">
@@ -131,7 +131,7 @@ Point Reward
                         <label>Deskripsi(Catatan)</label>
                         <input type="text" name="deskripsi" class="form-control">
                     </div>
-                     <button class="btn btn-primary btn-sm" type="sumbit">Gunakan</button>
+                    <button class="btn btn-primary btn-sm" type="sumbit">Gunakan</button>
                 </form>
             </div>
         </div>
@@ -166,9 +166,9 @@ Point Reward
                    </thead>
                    <tbody id="listHistory"></tbody>
                </table>
-            </div>
-        </div>
-    </div>
+           </div>
+       </div>
+   </div>
 </div>
 
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
@@ -201,16 +201,16 @@ Point Reward
                 }
                 setTimeout(function() {
                   //  insertPoinrealtime();
-                }, 5500);
+              }, 5500);
 
             });
-                        }
-                        $('body').delegate('#caripoin','submit',function(e)
-                        {
-                            e.preventDefault();
-                            window.cari=$('input[name="cari"]').val();
-                            gettable();
-                        });
+        }
+        $('body').delegate('#caripoin','submit',function(e)
+        {
+            e.preventDefault();
+            window.cari=$('input[name="cari"]').val();
+            gettable();
+        });
         function gettable() { 
             $('#listPoin').html('<tr><td  class="text-center" colspan="5">Loading...<td></tr>');
             var cari_='';
@@ -228,7 +228,7 @@ Point Reward
                     var cs=key.custmer_partner_name?key.custmer_partner_name:'-';
                     let_ += `<tr>
                     
-                     
+
                     <td>` + key.id_transaksi + `</td>
                     <td>` + key.id_user + `</td> 
                     <td class="text-center">` + key.total + `</td>
@@ -256,8 +256,8 @@ Point Reward
 
                     $('#listPoin').html(let_);
                     $('#page').html(`<nav aria-label="Page navigation example">
-                    <ul class="pagination">`+link_page+`</ul>
-                    </nav>`);
+                        <ul class="pagination">`+link_page+`</ul>
+                        </nav>`);
                 }
                 else
                 {
@@ -298,15 +298,15 @@ Point Reward
         $('body').delegate('.Detail','click',function(e)
         {
             e.preventDefault();
-              window.id_detail=$(this).data('id_detail');
-              $('#DetailModal').modal('show');
+            window.id_detail=$(this).data('id_detail');
+            $('#DetailModal').modal('show');
 
         });
         $('#DetailModal').on('shown.bs.modal', function (e) 
         {
             e.preventDefault();
             $('#listdetail').empty();
-             fetch("{{url('point/detail-belanja')}}?id_detail=" + window.id_detail, {
+            fetch("{{url('point/detail-belanja')}}?id_detail=" + window.id_detail, {
                 method: 'GET'
             }).then(res => res.json()).then(data => {
                 var list_detail=``;
@@ -322,32 +322,32 @@ Point Reward
                     </tr>`;
                     list_ttl+=k.sub_total;
                 }
-            $('#listdetail').html(`
-            <table >
-            <tr>
-                <td>ID Transaksi</td>
-                <td> : </td>
-                <td>`+data.dt_poin.no_trax+`</td>
-                
-            </tr>
-            <tr>
-                <td>Tanggal </td>
-                <td> : </td>
-                <td> `+data.dt_poin.tanggal_poin+`</td>
-            </tr>
-            <tr>
-                <td>Poin Didapat</td>
-                <td> : </td>
-                <td> `+data.dt_poin.jumlah_poin+`</td>
-            </tr>
-            </table>
-                <table class="table"><tr>
+                $('#listdetail').html(`
+                    <table >
+                    <tr>
+                    <td>ID Transaksi</td>
+                    <td> : </td>
+                    <td>`+data.dt_poin.no_trax+`</td>
+
+                    </tr>
+                    <tr>
+                    <td>Tanggal </td>
+                    <td> : </td>
+                    <td> `+data.dt_poin.tanggal_poin+`</td>
+                    </tr>
+                    <tr>
+                    <td>Poin Didapat</td>
+                    <td> : </td>
+                    <td> `+data.dt_poin.jumlah_poin+`</td>
+                    </tr>
+                    </table>
+                    <table class="table"><tr>
                     <td>Nama Barang</td>
                     <td>Harga</td>
                     <td>Qty</td> 
                     <td>Sub Total</td>
                     </tr>`+list_detail+`<tr><td colspan="3">Total</td><td>`+list_ttl+`</td></table>`);
-               
+
 
             });
 
@@ -362,10 +362,10 @@ Point Reward
             $('#statusModal').modal('show');
 
         });
-$('#statusModal').on('shown.bs.modal', function (e) 
+        $('#statusModal').on('shown.bs.modal', function (e) 
         {
             e.preventDefault(); 
-                $('#totalPoinmember').empty();
+            $('#totalPoinmember').empty();
 
             fetch("{{url('point/total-poin')}}?id_user=" + window.id_user, {
                 method: 'GET'
@@ -375,13 +375,13 @@ $('#statusModal').on('shown.bs.modal', function (e)
                 $('input[name="penguranganpoin"]').val(data.jumlah_dipakai);
 
             });
-                
+
         });
         
-$('body').delegate('#simpaneditpoin', 'submit', function(e) {
+        $('body').delegate('#simpaneditpoin', 'submit', function(e) {
             e.preventDefault();
-            var total_=parseInt(window.total_poin)-parseInt($('input[name="penguranganpoin"]').val()); 
-            if(total_<1)
+            var total_=parseInt(window.total_poin)-parseInt($('input[name="penguranganpoin"]').val());  
+            if(total_<0)
             {
                 alert('Poin Anda Tidak Mencukupi');
                 return;
@@ -400,17 +400,17 @@ $('body').delegate('#simpaneditpoin', 'submit', function(e) {
             });
 
         });
-     $('body').delegate('.Riwayat', 'click', function(e) {   
+        $('body').delegate('.Riwayat', 'click', function(e) {   
 
             e.preventDefault();
             window.id_user=$(this).data('id_user');
 
             $('#RiwayatModal').modal('show');
         });
-     $('#RiwayatModal').on('shown.bs.modal', function (e) 
+        $('#RiwayatModal').on('shown.bs.modal', function (e) 
         {
             e.preventDefault(); 
-                $('#listHistory').empty();
+            $('#listHistory').empty();
 
             fetch("{{url('hitsori-poin')}}?id_user=" + window.id_user, {
                 method: 'GET'
@@ -419,26 +419,26 @@ $('body').delegate('#simpaneditpoin', 'submit', function(e) {
                 for(let ri of data.riwayat)
                 {
                     list_+=`<tr>
-                                <td>`+ri.created_at+`</td>
-                                <td>`+ri.poin+`</td>
-                                <td>`+ri.deskripsi+`</td>
-                            </tr>`;
-                 
+                    <td>`+ri.created_at+`</td>
+                    <td>`+ri.poin+`</td>
+                    <td>`+ri.deskripsi+`</td>
+                    </tr>`;
+
                 }
                 if(list_!='')
                 {
 
-                $('#listHistory').html(list_);
+                    $('#listHistory').html(list_);
                 }
                 else
                 {
-                $('#listHistory').html('<tr><td colspan="3">Data Kosong</td></tr>');
+                    $('#listHistory').html('<tr><td colspan="3">Data Kosong</td></tr>');
 
                 }
             });
-                
+
         });
-    
+
     });
 </script>
 @endsection

@@ -52,10 +52,10 @@ class PointRewardController extends Controller
                     $nominal_awal   = @$key->{'TRANSACTION_TOTAL'};
                     // echo '</pre>';
                     $db_get         = DB::table('tb_poin_transaksi')
-                        ->where('id_user', strtolower(@$key->{'created_by'}->{'USER_FULLNAME'}))
+                    ->where('id_user', strtolower(@$key->{'created_by'}->{'USER_FULLNAME'}))
                         //->whereDate('tanggal_poin', $created_at)
-                        ->where('status', 'aktif')
-                        ->get();
+                    ->where('status', 'aktif')
+                    ->get();
                     $nom = 0;
                     $totalpoinsebelumnya = 0;
                     foreach ($db_get as $key2) {
@@ -108,7 +108,8 @@ class PointRewardController extends Controller
 
     public function cetak()
     {
-        return Excel::download(new AllRewardPointExport, 'All-reward-transaksi.xlsx');
+        //return Excel::download(new AllRewardPointExport, 'All-reward-transaksi.xlsx');
+        return view('excel');
     }
 
     public function gettablepoint(Request $request)
@@ -149,8 +150,8 @@ class PointRewardController extends Controller
     public function hapuspointransaksi(Request $request)
     {
         DB::table('tb_poin_transaksi')
-            ->where('id_poin', $request->input('id_poin'))
-            ->update(['status'  => 'hapus']);
+        ->where('id_poin', $request->input('id_poin'))
+        ->update(['status'  => 'hapus']);
         print json_encode(array('error' => false));
         // test
     }
