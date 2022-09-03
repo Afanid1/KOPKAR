@@ -42,7 +42,8 @@ class PointController extends Controller
         if (count(@$data->{'data'}) != 0) {
             // echo '<pre>';
             $data_trx = @$data->{'data'};
-            $nominal_min = 10000;
+            $nom_set=DB::table('tb_nominal_point')->first();
+            $nominal_min = $nom_set?@$nom_set->nominal:10000;
             $ttl_       = 0;
             foreach ($data_trx as $key) {
 
@@ -54,10 +55,10 @@ class PointController extends Controller
 
                     $db_get         = DB::table('tb_poin_transaksi')
                         //strtolower untuk merubah string menjadi huruf kecil. 
-                        ->where('id_user', strtolower(@$key->{'created_by'}->{'USER_FULLNAME'}))
-                        ->whereDate('tanggal_poin', $created_at)
-                        ->where('status', 'aktif')
-                        ->get();
+                    ->where('id_user', strtolower(@$key->{'created_by'}->{'USER_FULLNAME'}))
+                    ->whereDate('tanggal_poin', $created_at)
+                    ->where('status', 'aktif')
+                    ->get();
                     $nom = 0;
                     $totalpoinsebelumnya = 0;
                     foreach ($db_get as $key2) {
@@ -152,16 +153,16 @@ class PointController extends Controller
     public function hapuspointransaksi(Request $request)
     {
         DB::table('tb_poin_transaksi')
-            ->where('id_poin', $request->input('id_poin'))
-            ->update(['status'  => 'hapus']);
+        ->where('id_poin', $request->input('id_poin'))
+        ->update(['status'  => 'hapus']);
         print json_encode(array('error' => false));
     }
     public function pointdetailbelanja(Request $request)
     {
         $dt_poin = DB::table('tb_poin_transaksi')
-            ->select('tb_belanja.*', 'tb_poin_transaksi.tanggal_poin', 'tb_poin_transaksi.jumlah_poin')
-            ->leftJoin('tb_belanja', 'tb_belanja.no_trax', '=', 'tb_poin_transaksi.id_transaksi')
-            ->where('tb_poin_transaksi.id_poin', $request->input('id_detail'))->first();
+        ->select('tb_belanja.*', 'tb_poin_transaksi.tanggal_poin', 'tb_poin_transaksi.jumlah_poin')
+        ->leftJoin('tb_belanja', 'tb_belanja.no_trax', '=', 'tb_poin_transaksi.id_transaksi')
+        ->where('tb_poin_transaksi.id_poin', $request->input('id_detail'))->first();
         @$dt_poin->atribut = @unserialize($dt_poin->atribut) ? unserialize($dt_poin->atribut) : array();
 
         print json_encode(array('dt_poin' => $dt_poin));
@@ -170,13 +171,13 @@ class PointController extends Controller
     public function gettotalpoin(Request $request)
     {
         $jumlah_poin         = DB::table('tb_poin_transaksi')
-            ->where('id_user', 'like', $request->input('id_user'))
-            ->where('status', '=', 'aktif')
+        ->where('id_user', 'like', $request->input('id_user'))
+        ->where('status', '=', 'aktif')
 
-            ->sum('jumlah_poin');
+        ->sum('jumlah_poin');
         $jumlah_dipakai  = DB::table('tb_poin_dipakai')
-            ->where('id_user', 'like', $request->input('id_user'))
-            ->first();
+        ->where('id_user', 'like', $request->input('id_user'))
+        ->first();
         $dipakai = @$jumlah_dipakai->poin ? $jumlah_dipakai->poin : 0;
 
 
@@ -186,9 +187,9 @@ class PointController extends Controller
     public function hitsoripoin(Request $request)
     {
         $riwayat         = DB::table('tb_riwayat_point')
-            ->where('id_user', 'like', $request->input('id_user'))
-            ->orderBy('created_at', 'DESC')
-            ->get();
+        ->where('id_user', 'like', $request->input('id_user'))
+        ->orderBy('created_at', 'DESC')
+        ->get();
 
         print json_encode(array('riwayat' => $riwayat));
         // test

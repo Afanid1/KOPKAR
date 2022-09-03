@@ -99,6 +99,9 @@ Route::group(['as' => 'admin.', 'middleware' => 'role:admin'], function () {
         Route::get('hapus-poin-transaksi', [PointRewardController::class, 'hapuspointransaksi']);
         Route::get('detail-belanja', [PointRewardController::class, 'pointdetailbelanja']);
         Route::get('total-poin', [PointRewardController::class, 'gettotalpoin']);
+        Route::post('simpan-setting-nominal', [PointRewardController::class, 'simpansettingnominal']);
+        Route::post('poin-reset', [PointRewardController::class, 'poinreset']);
+        
 
 
 

@@ -44,7 +44,8 @@ class PointRewardController extends Controller
         if (@$data) {
             // echo '<pre>';
             $data_trx = @$data->{'data'};
-            $nominal_min = 10000;
+            $nom_set=DB::table('tb_nominal_point')->first();
+            $nominal_min = $nom_set?@$nom_set->nominal:10000;
             foreach ($data_trx as $key) {
                 if (@$key->{'customer_detail'}->{'CUSTOMER_PARTNER_NAME'}) {
                     $created_at     = Carbon::parse($key->{'created_at'})->format('Y-m-d');
@@ -155,4 +156,51 @@ class PointRewardController extends Controller
         print json_encode(array('error' => false));
         // test
     }
+    public function simpansettingnominal(Request $request)
+    {
+        $cek=DB::table('tb_nominal_point')->first();
+        if($cek)
+        {
+            DB::table('tb_nominal_point')->where('id',@$cek->id)->update(['nominal'=>$request->input('nominal')]);
+        }
+        else{
+            DB::table('tb_nominal_point')->insert(['nominal'=>$request->input('nominal')]);
+        }
+        print json_encode(array('error' => false));
+        // test
+    }
+    public function poinreset(Request $request)
+    {
+        $db         = DB::table('tb_poin_transaksi');
+        $db->select('id_user', DB::raw('sum(jumlah_poin) as total'));
+
+        $db->groupBy('id_user');
+        $db_get = $db->get();
+        $i = 0;
+        foreach ($db_get as $key) { 
+            $poin_ygdigunakan         = DB::table('tb_poin_dipakai')->where('id_user', $key->id_user)->first();
+            $total = @$poin_ygdigunakan->poin ? $key->total - @$poin_ygdigunakan->poin : $key->total;
+            if( $total>0)
+            {
+                if(@$poin_ygdigunakan)
+                {
+
+                    DB::table('tb_poin_dipakai')->where('id_user', @$key->id_user)->update(['poin'=>$total]);
+                }
+                else
+                {
+                    DB::table('tb_poin_dipakai')->insert([
+                        'id_user'=>@$key->id_user,
+                        'poin'=>$total,'created_at'=>carbon::now(),'updated_at'=>carbon::now()]);
+
+                }
+            }
+
+            $i++;
+        } 
+        print json_encode(array('error' => false)); 
+        // test
+    }
+
+
 }

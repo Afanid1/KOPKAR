@@ -11,11 +11,18 @@ Poin Transaksi
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="{{asset('dist/css/print.css')}}" type="text/css" media="print">
 
+<link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
+<link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+
+
 <style>
     .dt-buttons {
         padding-bottom: 20px;
     }
-
+    .input-group{
+        width: 80%;
+        left: 65px;
+    }
     .input-group-addon {
         padding: .5rem .75rem;
         margin-bottom: 0;
@@ -35,6 +42,18 @@ Poin Transaksi
     i.fa.fa-gift {
         color: ghostwhite;
     }
+    .listdesc{
+      padding: 0 0 10px 20px;
+      color: #686868;
+      font-size: 15px;
+      font-style: italic;
+  }
+  .listdesc li {
+      list-style-type: none;
+  }
+  .btn-reward-reset {
+      display: block ruby !important;
+  }
 </style>
 @endsection
 
@@ -75,120 +94,186 @@ Poin Transaksi
                 </div>
                 <div class="card-body">
                     <div class="row mb-2">
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <a class="btn btn-success" href="/cetak-poin"><i class="fa fa-file-excel" aria-hidden="true"></i> Excell</a>
                             <button class="btn btn-warning print text-white" onclick="window.print();return false;"><i class="fas fa-print text-white" aria-hidden="true"></i> Print</button>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn-reward-reset text-right mb-1">
+                               <a class="btn btn-primary text-white" id="showModalPoinNominal"><i class="fa fa-cog" aria-hidden="true"></i>
+                               Nominal Poin</a>
+                               <a class="btn btn-danger text-white" id="ResetPoin">
+                                 <i class="fas fa-sync"></i>
+                             Reset Poin</a>
+                         </div>  
+                         <form id="caripoin">
+                            <div class="input-group">
+                                <input type="text" name="cari" class="form-control" placeholder="Cari poin">
+                                <span class="input-group-append">
+                                    <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                                </span>
+                            </div>
+                        </form>
 
-                        </div>
-                        <div class="col-md-3">
-                            <form id="caripoin">
-                                <div class="input-group">
-                                    <input type="text" name="cari" class="form-control" placeholder="Cari poin">
-                                    <span class="input-group-append">
-                                        <button type="submit" class="btn btn-primary btn-sm">Cari</button>
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
+
                     </div>
-                    <div style="overflow-x:auto;">
-                        <table class="table centerW table-bordered table table-striped">
-                            <thead class="text-center">
-                                <th>Kasir</th>
-                                <th>Nama Anggota</th>
-                                <th>Poin Total</th>
-                                <!-- <th>tanggal_poin</th> -->
-                                <th class="text-center drop">Aksi</th>
-                            </thead>
-                            <tbody id="listPoin">
-                            </tbody>
-                        </table>
-                        <div id='page'></div>
-                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="table centerW table-bordered table table-striped">
+                        <thead class="text-center">
+                            <th>Kasir</th>
+                            <th>Nama Anggota</th>
+                            <th>Poin Total</th>
+                            <!-- <th>tanggal_poin</th> -->
+                            <th class="text-center drop">Aksi</th>
+                        </thead>
+                        <tbody id="listPoin">
+                        </tbody>
+                    </table>
+                    <div id='page'></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </section>
 </div>
 <div id="statusModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title align-self-center mt-0">EDIT POIN</h5>
+                <h5 class="modal-title align-self-center mt-0">Gunakan Point</h5>
             </div>
-            <div class="modal-body text-center">
+            <div class="modal-body ">
                 <div class="msg-Alert"></div>
-                <div id="totalPoinmember"></div>
-                <form id="simpaneditpoin" name="simpaneditpoin">
-                    <div class="form-group">
-                        <label>Gunakan Poin</label>
-                        <input type="text" name="penguranganpoin" class="form-control">
+                <div id="totalPoinmember" class="text-center"></div>
+                    <label>*Note</label> 
+                    <!-- <li>List nominal barang reward</li> -->
+                        <div class="listdesc">
+                            <li> "Poin <50 = Produk Rp. 20.000"</li>
+                            <li> "Poin <100 = Produk Rp. 50.000"</li>
+                            <li> "Poin <200 = Produk Rp. 100.000"</li>
+                            <li> "Poin >201 = Produk Rp. 150.000"</li>
+                            <li> "Poin >300 = Produk Rp. 200.000"</li>
+                        </div>
+                            <form id="simpaneditpoin" name="simpaneditpoin" >
+                                <div class="form-group">
+                                    <label>Gunakan Poin</label>
+                                    <input type="text" name="penguranganpoin" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pilihan Produk</label>
+                                    <select class="select2" multiple="multiple" placeholder="Pilih Produk" style="width: 100%;">
+                                    <option value="1">ABC Kecap Manis B.Gold 580</option>
+                                    <option value="2">Aqua 600 ml</option>
+                                    <option value="3">Aqua Gelas</option>
+                                    <option value="4">Big cola</option>
+                                    <option value="5">Biskuat energi</option>
+                                    <option value="6">Buku Gambar</option>
+                                    <option value="7">Bulpoin</option>
+                                    <option value="8">chitato 15 g</option>
+                                    <option value="9">Green tea hi 500 ml</option>
+                                    <option value="10">Indocafe Cappucino 25 g </option>
+                                    <option value="11">Indocafe Cofee Mix @ 100</option>
+                                    <option value="12">TipeX</option>
+                                    <option value="13">Pensil</option>
+                                    </select>
+                                    </div>
+                                
+                                <div class="form-group">
+                                    <label>Deskripsi(Catatan)</label>
+                                    <textarea name="deskripsi" class="form-control catatan" placeholder="Jenis Produk"> </textarea>
+                                </div>
+                                <div class="text-right">
+                                    <button class="btn btn-primary btn-sm" type="sumbit">Gunakan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Deskripsi(Catatan)</label>
-                        <input type="text" name="deskripsi" class="form-control">
-                    </div>
-                    <button class="btn btn-primary btn-sm" type="sumbit">Gunakan</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<div id="DetailModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title align-self-center mt-0">Detail Transaksi</h5>
+            <div id="DetailModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title align-self-center mt-0">Detail Transaksi</h5>
+                        </div>
+                        <div class="modal-body" id="listdetail">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body" id="listdetail">
-            </div>
-        </div>
-    </div>
-</div>
-<div id="RiwayatModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title align-self-center mt-0">Riwayat Poin Yang digunakan</h5>
-            </div>
-            <div class="modal-body text-center">
-             <table class="table">
-                 <thead>
-                     <tr>
-                         <td>Tanggal</td>
-                         <td>Poin digunakan</td>
-                         <td>Deskripsi</td> 
-                     </tr>
-                 </thead>
-                 <tbody id="listHistory"></tbody>
-             </table>
+            <div id="RiwayatModal" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title align-self-center mt-0">Riwayat Poin Yang digunakan</h5>
+                        </div>
+                        <div class="modal-body text-center">
+                <div style="overflow-x:auto;">
+
+                         <table class="table">
+                             <thead>
+                                 <tr>
+                                     <td>Tanggal</td>
+                                     <td>Poin digunakan</td>
+                                     <td>Deskripsi</td> 
+                                 </tr>
+                             </thead>
+                             <tbody id="listHistory"></tbody>
+                         </table>
+                     </div>
+                 </div>
+                 </div>
+
+             </div>
+
+
          </div>
-     </div>
 
- </div>
-</div>
-<!-- /.content-wrapper -->
-<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/jszip/jszip.min.js')}}"></script>
-<script src="{{asset('plugins/pdfmake/pdfmake.min.js')}}"></script>
-<script src="{{asset('plugins/pdfmake/vfs_fonts.js')}}"></script>
-<script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-<script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-<script>
-    $(document).ready(function() {
+         <div id="ModalFormnominapoin" class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title align-self-center mt-0">Setting Nominal Poin</h5>
+                    </div>
+                    <div class="modal-body" >
+                        @php
+                        $nomset=DB::table('tb_nominal_point')->first();
+                        @endphp
+                        <form id="simpansettingnominalpoin" name="simpansettingnominalpoin">
+                            <div class="input-group">
+                                <input type="text" name="nominal" value="{{@$nomset->nominal}}" class="form-control">
+                                <span class="input-group-append">
+                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-wrapper -->
+            <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+            <script src="{{asset('plugins/jszip/jszip.min.js')}}"></script>
+            <script src="{{asset('plugins/pdfmake/pdfmake.min.js')}}"></script>
+            <script src="{{asset('plugins/pdfmake/vfs_fonts.js')}}"></script>
+            <script src="{{asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+            <script src="{{asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+            <script>
+                $(document).ready(function() {
 
-        gettable();
-        insertPoinrealtime();
+                    gettable();
+                    insertPoinrealtime();
 
-        function insertPoinrealtime() {
+                    function insertPoinrealtime() {
             // const Form_hps_item  = new FormData();
             // Form_hps_item.append('_token', '{{csrf_token()}}');  
             var url_ = "{{url('point/get-poin-transaksi')}}";
@@ -340,7 +425,7 @@ Poin Transaksi
             method: 'GET'
         }).then(res => res.json()).then(data => {
             window.total_poin = data.jumlah_poin;
-            $('#totalPoinmember').html('<div class="alert alert-success"><h3>Total Poin:' + window.total_poin + '</h3></div>');
+            $('#totalPoinmember').html('<div class="alert alert-success " style="text-bold"><h2>Total Poin : ' + window.total_poin + '</h2></div>');
             $('input[name="penguranganpoin"]').val(data.jumlah_dipakai);
 
         });
@@ -406,6 +491,65 @@ Poin Transaksi
         });
         
     });
+    $('body').delegate('#showModalPoinNominal','click',function(e)
+    {
+        e.preventDefault();
+        $('#ModalFormnominapoin').modal('show');
+
+
+    });
+    $('body').delegate('#simpansettingnominalpoin','submit',function(e)
+    {
+
+        e.preventDefault();
+
+
+
+        const simpansettingnom = document.forms.namedItem('simpansettingnominalpoin');
+        const fomrsmpnsnom = new FormData(simpansettingnom);
+        fomrsmpnsnom.append('_token', '{{csrf_token()}}'); 
+        fetch("{{url('reward/simpan-setting-nominal')}}", {
+            method: 'POST',
+            body: fomrsmpnsnom
+        }).then(res => res.json()).then(data => {
+            window.location.reload();
+
+        });
+
+    });
+     //Initialize Select2 Elements
+ $('.select2').select2({
+      theme: 'bootstrap4'
+    })
+
+    $('.select2').on('change',function(){
+    var data = $('.select2 option:selected')
+                .toArray().map(item => item.text);
+                data = data.toString();
+        $('.catatan').html(data);
+    })
+    $('body').delegate('#ResetPoin','click',function(e)
+    {
+
+        e.preventDefault();
+
+        if(!confirm('Apakah anda yakin untuk reset semua Poin?'))
+        {
+            return;
+        }
+
+        const fomrreset = new FormData();
+        fomrreset.append('_token', '{{csrf_token()}}'); 
+        fetch("{{url('reward/poin-reset')}}", {
+            method: 'POST',
+            body: fomrreset
+        }).then(res => res.json()).then(data => {
+            window.location.reload();
+
+        });
+
+    });
+    
 
 });
 </script>

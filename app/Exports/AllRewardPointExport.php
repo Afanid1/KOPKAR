@@ -9,7 +9,7 @@ class AllRewardPointExport implements FromCollection
 {
     /**
      * @return \Illuminate\Support\Collection
-     */
+     */ 
     public function collection()
     {
         return DB::table('tb_poin_transaksi')
